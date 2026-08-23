@@ -2,7 +2,7 @@ import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
 import styles from "./page.module.css";
 
 const fraunces = Fraunces({
-  subsets: ["latin", "cyrillic"],
+  subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-fraunces",
 });
