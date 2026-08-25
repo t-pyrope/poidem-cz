@@ -1,11 +1,11 @@
-import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
 import { EventItem } from "@/app/types";
 
-const fraunces = Fraunces({
-  subsets: ["latin"],
+const plexSerif = IBM_Plex_Serif({
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600"],
-  variable: "--font-fraunces",
+  variable: "--font-plex-serif",
 });
 
 const inter = Inter({
@@ -46,7 +46,7 @@ const categories = [
 export default function Home() {
   return (
     <main
-      className={`${styles.page} ${fraunces.variable} ${inter.variable} ${plexMono.variable}`}
+      className={`${styles.page} ${plexSerif.variable} ${inter.variable} ${plexMono.variable}`}
     >
       <section className={styles.hero}>
         <span className={`${styles.lampDot} ${styles.dot1}`} />
@@ -54,18 +54,11 @@ export default function Home() {
         <span className={`${styles.lampDot} ${styles.dot3}`} />
         <span className={`${styles.lampDot} ${styles.dot4}`} />
         <div className={styles.wrap}>
-          <div className={styles.eyebrow}>Прага, каждый вечер</div>
-          <h1 className={styles.h1}>
-            Что происходит в городе, <em>пока ты не смотрел</em>
-          </h1>
+          <div className={styles.eyebrow}>Прага, каждый день</div>
+          <h1 className={styles.h1}>Пойдём — афиша мероприятий в Праге</h1>
           <p className={styles.heroText}>
-            Концерты, спектакли, встречи и выставки для русскоязычной Праги — в
-            одном спокойном месте, без десяти вкладок и групп в телеграме.
+            Встречи, выставки, концерты, спектакли и многое другое
           </p>
-          <div className={styles.heroActions}>
-            <button className={styles.btnPrimary}>Смотреть афишу</button>
-            <button className={styles.btnGhost}>Добавить своё событие</button>
-          </div>
         </div>
       </section>
 
