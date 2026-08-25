@@ -1,5 +1,6 @@
 import { Fraunces, Inter, IBM_Plex_Mono } from "next/font/google";
 import styles from "./page.module.css";
+import { EventItem } from "@/app/types";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -19,51 +20,28 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
-type EventItem = {
-  day: string;
-  month: string;
-  tag: "concert" | "theatre" | "meetup";
-  tagLabel: string;
-  title: string;
-  meta: string;
-};
-
 const events: EventItem[] = [
   {
-    day: "27",
-    month: "авг",
-    tag: "concert",
-    tagLabel: "Концерт",
+    date: new Date(1787851800000),
+    tags: ["concert"],
     title: "Вечер русского романса",
-    meta: "Divadlo Kampa · 19:30 · от 350 Kč",
-  },
-  {
-    day: "29",
-    month: "авг",
-    tag: "meetup",
-    tagLabel: "Встреча",
-    title: "Разговорный клуб для новых пражан",
-    meta: "Kavárna Řehoř Samsa · 18:00 · вход свободный",
-  },
-  {
-    day: "2",
-    month: "сен",
-    tag: "theatre",
-    tagLabel: "Театр",
-    title: "«Чайка» — гастроли из Брно",
-    meta: "Švandovo divadlo · 20:00 · от 490 Kč",
-  },
-  {
-    day: "6",
-    month: "сен",
-    tag: "concert",
-    tagLabel: "Концерт",
-    title: "Джазовый квартет на крыше",
-    meta: "Vzlet Praha · 21:00 · от 300 Kč",
+    place: "Divadlo Kampa · 19:30 · от 350 Kč",
+    id: "",
+    link: "",
+    createdAt: new Date(1787651340000),
+    price: 350,
   },
 ];
 
-const categories = ["Все", "Концерты", "Театр", "Выставки", "Встречи", "Кино", "Ярмарки"];
+const categories = [
+  "Все",
+  "Концерты",
+  "Театр",
+  "Выставки",
+  "Встречи",
+  "Кино",
+  "Ярмарки",
+];
 
 export default function Home() {
   return (
@@ -81,8 +59,8 @@ export default function Home() {
             Что происходит в городе, <em>пока ты не смотрел</em>
           </h1>
           <p className={styles.heroText}>
-            Концерты, спектакли, встречи и выставки для русскоязычной Праги —
-            в одном спокойном месте, без десяти вкладок и групп в телеграме.
+            Концерты, спектакли, встречи и выставки для русскоязычной Праги — в
+            одном спокойном месте, без десяти вкладок и групп в телеграме.
           </p>
           <div className={styles.heroActions}>
             <button className={styles.btnPrimary}>Смотреть афишу</button>
@@ -111,16 +89,18 @@ export default function Home() {
               style={{ animationDelay: `${0.05 + i * 0.07}s` }}
             >
               <div className={styles.stub}>
-                <span className={styles.day}>{ev.day}</span>
-                <span className={styles.month}>{ev.month}</span>
+                <span className={styles.day}>{ev.date.getDate()}</span>
+                <span className={styles.month}>{ev.date.getMonth()}</span>
               </div>
               <div className={styles.perf} />
               <div className={styles.details}>
-                <span className={`${styles.tag} ${styles[ev.tag]}`}>
-                  {ev.tagLabel}
-                </span>
+                {ev.tags.map((tag) => (
+                  <span className={`${styles.tag}`} key={tag}>
+                    {tag}
+                  </span>
+                ))}
                 <h3 className={styles.detailsTitle}>{ev.title}</h3>
-                <span className={styles.meta}>{ev.meta}</span>
+                <span className={styles.meta}>{ev.place}</span>
               </div>
             </div>
           ))}
