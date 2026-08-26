@@ -244,6 +244,12 @@
   gap: 6px;
 }
 
+.tags {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .tag {
   font-family: var(--font-plex-mono), monospace;
   font-size: 11px;
