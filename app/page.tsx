@@ -1,6 +1,7 @@
 import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
 import { EventItem } from "@/app/types";
+import { db } from "@/lib/db";
 
 const plexSerif = IBM_Plex_Serif({
   subsets: ["latin", "cyrillic"],
@@ -20,19 +21,6 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
-const events: EventItem[] = [
-  {
-    date: new Date(1787851800000),
-    tags: ["concert"],
-    title: "Вечер русского романса",
-    place: "Divadlo Kampa · 19:30 · от 350 Kč",
-    id: "",
-    link: "",
-    createdAt: new Date(1787651340000),
-    price: 350,
-  },
-];
-
 const categories = [
   "Все",
   "Концерты",
@@ -43,7 +31,8 @@ const categories = [
   "Ярмарки",
 ];
 
-export default function Home() {
+export default async function Home() {
+  const events = await db.query.events.findMany();
   return (
     <main
       className={`${styles.page} ${plexSerif.variable} ${inter.variable} ${plexMono.variable}`}
@@ -87,13 +76,15 @@ export default function Home() {
               </div>
               <div className={styles.perf} />
               <div className={styles.details}>
-                {ev.tags.map((tag) => (
-                  <span className={`${styles.tag}`} key={tag}>
-                    {tag}
-                  </span>
-                ))}
+                <div className={styles.tags}>
+                  {ev.tags.map((tag) => (
+                    <span className={`${styles.tag}`} key={tag}>
+                      {tag}
+                    </span>
+                  ))}
+                </div>
                 <h3 className={styles.detailsTitle}>{ev.title}</h3>
-                <span className={styles.meta}>{ev.place}</span>
+                <span className={styles.meta}>{ev.organization}</span>
               </div>
             </div>
           ))}
