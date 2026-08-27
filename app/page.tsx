@@ -1,7 +1,7 @@
 import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
-import { EventItem } from "@/app/types";
 import { db } from "@/lib/db";
+import { EventCard } from "@/app/components/EventCard";
 
 const plexSerif = IBM_Plex_Serif({
   subsets: ["latin", "cyrillic"],
@@ -32,7 +32,10 @@ const categories = [
 ];
 
 export default async function Home() {
-  const events = await db.query.events.findMany();
+  const events = await db.query.events.findMany({
+    orderBy: (events, { asc }) => asc(events.date),
+  });
+
   return (
     <main
       className={`${styles.page} ${plexSerif.variable} ${inter.variable} ${plexMono.variable}`}
@@ -65,28 +68,7 @@ export default async function Home() {
 
         <div className={styles.feed}>
           {events.map((ev, i) => (
-            <div
-              key={ev.title}
-              className={styles.ticket}
-              style={{ animationDelay: `${0.05 + i * 0.07}s` }}
-            >
-              <div className={styles.stub}>
-                <span className={styles.day}>{ev.date.getDate()}</span>
-                <span className={styles.month}>{ev.date.getMonth()}</span>
-              </div>
-              <div className={styles.perf} />
-              <div className={styles.details}>
-                <div className={styles.tags}>
-                  {ev.tags.map((tag) => (
-                    <span className={`${styles.tag}`} key={tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <h3 className={styles.detailsTitle}>{ev.title}</h3>
-                <span className={styles.meta}>{ev.organization}</span>
-              </div>
-            </div>
+            <EventCard eventItem={ev} index={i} key={ev.title} />
           ))}
         </div>
 
