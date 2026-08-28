@@ -2,6 +2,7 @@ import { EventItem } from "@/app/types";
 import dayjs from "dayjs";
 
 import styles from "./EventCard.module.css";
+import { getTagName } from "@/app/utils";
 
 const monthsDative = [
   "января",
@@ -44,7 +45,7 @@ export const EventCard = ({
         <div className={styles.tags}>
           {eventItem.tags.map((tag) => (
             <span className={styles.tag} key={tag}>
-              {tag}
+              {getTagName(tag)}
             </span>
           ))}
         </div>
