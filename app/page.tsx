@@ -2,6 +2,7 @@ import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
 import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
+import { Filters } from "@/app/components/Filters";
 
 const plexSerif = IBM_Plex_Serif({
   subsets: ["latin", "cyrillic"],
@@ -55,16 +56,7 @@ export default async function Home() {
       </section>
 
       <div className={styles.wrap}>
-        <div className={styles.cats}>
-          {categories.map((cat, i) => (
-            <span
-              key={cat}
-              className={`${styles.cat} ${i === 0 ? styles.catActive : ""}`}
-            >
-              {cat}
-            </span>
-          ))}
-        </div>
+        <Filters events={events} />
 
         <div className={styles.feed}>
           {events.map((ev, i) => (
