@@ -22,20 +22,21 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
 });
 
-const categories = [
-  "Все",
-  "Концерты",
-  "Театр",
-  "Выставки",
-  "Встречи",
-  "Кино",
-  "Ярмарки",
-];
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const params = await searchParams;
+  const category = params.category;
 
-export default async function Home() {
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
   });
+
+  const eventsToDisplay = category
+    ? events.filter((evt) => evt.tags.includes(category))
+    : events;
 
   return (
     <main
@@ -59,7 +60,7 @@ export default async function Home() {
         <Filters events={events} />
 
         <div className={styles.feed}>
-          {events.map((ev, i) => (
+          {eventsToDisplay.map((ev, i) => (
             <EventCard eventItem={ev} index={i} key={ev.title} />
           ))}
         </div>
