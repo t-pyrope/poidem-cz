@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 
 export const events = pgTable("events", {
@@ -19,3 +20,14 @@ export const eventPrices = pgTable("event_prices", {
   label: text("label").notNull(), // "adult", "student", "senior"
   amount: integer("amount").notNull(),
 });
+
+export const eventsRelations = relations(events, ({ many }) => ({
+  prices: many(eventPrices),
+}));
+
+export const eventPricesRelations = relations(eventPrices, ({ one }) => ({
+  event: one(events, {
+    fields: [eventPrices.eventId],
+    references: [events.id],
+  }),
+}));

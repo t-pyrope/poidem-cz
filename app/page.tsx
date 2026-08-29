@@ -33,6 +33,9 @@ export default async function Home({
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
+    with: {
+      prices: true,
+    },
   });
 
   const eventsToDisplay = category
