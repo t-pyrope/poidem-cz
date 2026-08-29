@@ -40,7 +40,7 @@ export default async function Home({
   const month =
     params.month && /^\d{4}-(0[1-9]|1[0-2])$/.test(params.month)
       ? params.month
-      : dayjs().format("YYYY-MM");
+      : "2026-09";
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
