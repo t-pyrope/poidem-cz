@@ -1,8 +1,6 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import dayjs from "dayjs";
-
 import styles from "./MonthTabs.module.css";
 
 const months = [
@@ -18,7 +16,7 @@ export const MonthTabs = () => {
   const activeMonth =
     monthFromParams && /^\d{4}-(0[1-9]|1[0-2])$/.test(monthFromParams)
       ? monthFromParams
-      : dayjs().format("YYYY-MM");
+      : "2026-09";
 
   const handleMonthChange = (month: string) => {
     if (activeMonth === month) return;
