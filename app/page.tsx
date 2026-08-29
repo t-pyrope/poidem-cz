@@ -3,6 +3,7 @@ import styles from "./page.module.css";
 import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
 import { Filters } from "@/app/components/Filters";
+import { Button } from "@/app/components/Button";
 
 const plexSerif = IBM_Plex_Serif({
   subsets: ["latin", "cyrillic"],
@@ -80,9 +81,7 @@ export default async function Home({
               aria-label="Email для дайджеста"
               className={styles.input}
             />
-            <button className={styles.btnPrimary} type="submit">
-              Подписаться
-            </button>
+            <Button>Подписаться</Button>
           </form>
         </div>
 

@@ -104,26 +104,6 @@
   flex-wrap: wrap;
 }
 
-.btnPrimary,
-.btnGhost {
-  font-family: var(--font-inter), sans-serif;
-  font-weight: 600;
-  font-size: 15px;
-  padding: 13px 26px;
-  border-radius: 100px;
-  cursor: pointer;
-  border: none;
-}
-.btnPrimary {
-  background: var(--lamp);
-  color: var(--night-deep);
-}
-.btnGhost {
-  background: transparent;
-  color: var(--cream);
-  border: 1px solid var(--line);
-}
-
 /* ---------- TICKET CARDS ---------- */
 .feed {
   padding: 34px 0 100px;

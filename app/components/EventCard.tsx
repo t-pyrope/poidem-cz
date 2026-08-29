@@ -5,6 +5,7 @@ import "dayjs/locale/ru";
 
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
+import { Button } from "@/app/components/Button";
 
 const monthsDative = [
   "января",
@@ -59,14 +60,9 @@ export const EventCard = ({
       </div>
 
       <div className={styles.linkSection}>
-        <a
-          href={eventItem.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.link}
-        >
-          Открыть на сайте <FiExternalLink />
-        </a>
+        <Button href={eventItem.link}>
+          Перейти <FiExternalLink />
+        </Button>
       </div>
     </article>
   );

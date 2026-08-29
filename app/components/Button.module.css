@@ -1,0 +1,25 @@
+.btnPrimary,
+.btnGhost {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 100px;
+    cursor: pointer;
+    border: none;
+
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
+.btnPrimary {
+    background: var(--lamp);
+    color: var(--night-deep);
+}
+
+.btnGhost {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid var(--line);
+}
