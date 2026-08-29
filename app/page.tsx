@@ -4,6 +4,8 @@ import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
 import { Filters } from "@/app/components/Filters";
 import { Button } from "@/app/components/Button";
+import { MonthTabs } from "@/app/components/MonthTabs";
+import dayjs from "dayjs";
 
 const plexSerif = IBM_Plex_Serif({
   subsets: ["latin", "cyrillic"],
@@ -26,10 +28,19 @@ const plexMono = IBM_Plex_Mono({
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    organization?: string;
+    month?: string;
+  }>;
 }) {
   const params = await searchParams;
   const category = params.category;
+  const organization = params.organization;
+  const month =
+    params.month && /^\d{4}-(0[1-9]|1[0-2])$/.test(params.month)
+      ? params.month
+      : dayjs().format("YYYY-MM");
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
@@ -38,9 +49,12 @@ export default async function Home({
     },
   });
 
-  const eventsToDisplay = category
-    ? events.filter((evt) => evt.tags.includes(category))
-    : events;
+  const eventsToDisplay = events.filter(
+    (event) =>
+      (!category || event.tags.includes(category)) &&
+      (!organization || event.organization === organization) &&
+      dayjs(event.date).format("YYYY-MM") === month,
+  );
 
   return (
     <main
@@ -62,11 +76,13 @@ export default async function Home({
 
       <div className={styles.wrap}>
         <Filters events={events} />
+        <MonthTabs />
 
         <div className={styles.feed}>
           {eventsToDisplay.map((ev, i) => (
             <EventCard eventItem={ev} index={i} key={ev.title} />
           ))}
+          {eventsToDisplay.length === 0 && "Нет событий"}
         </div>
 
         <div className={styles.digest}>

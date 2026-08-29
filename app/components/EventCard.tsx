@@ -50,9 +50,6 @@ export const EventCard = ({
       " крон";
   }
 
-  console.log(prices);
-
-  console.log(eventItem);
   return (
     <article
       key={eventItem.title}
@@ -62,7 +59,7 @@ export const EventCard = ({
       <div className={styles.stub}>
         <span className={styles.day}>{date.format("D")}</span>
         <span className={styles.month}>{monthsDative[date.month()]}</span>
-        <span className={styles.dayOfWeek}>{dayOfWeek}</span>
+        <span className={styles.dayOfWeek}>({dayOfWeek})</span>
       </div>
 
       <div className={styles.perf} />

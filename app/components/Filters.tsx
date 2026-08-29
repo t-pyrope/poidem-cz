@@ -6,12 +6,18 @@ import { EventItem } from "@/app/types";
 import { getTagName } from "@/app/utils";
 
 import styles from "./Filters.module.css";
+import { Select } from "./Select";
 
 export const Filters = ({ events }: { events: EventItem[] }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const activeCategory = searchParams.get("category");
+  const activeOrganization = searchParams.get("organization");
+
+  const organizations = [
+    ...new Set(events.map((event) => event.organization)),
+  ].sort((a, b) => a.localeCompare(b));
 
   const categories: { categoryName: string; count: number }[] = events
     .reduce(
@@ -51,6 +57,26 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     });
   };
 
+  const handleOrganizationChange = (organization: string) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (activeOrganization === organization) {
+      return;
+    }
+
+    if (organization) {
+      params.set("organization", organization);
+    } else {
+      params.delete("organization");
+    }
+
+    const query = params.toString();
+
+    router.push(query ? `/?${query}` : "/", {
+      scroll: false,
+    });
+  };
+
   return (
     <div className={styles.cats}>
       <span
@@ -65,7 +91,6 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
       >
         Все ({events.length})
       </span>
-
       {categories.map((cat) => (
         <span
           key={cat.categoryName}
@@ -77,6 +102,13 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
           {getTagName(cat.categoryName)} ({cat.count})
         </span>
       ))}
+      <Select
+        ariaLabel="Организатор"
+        emptyOptionLabel="Все организаторы"
+        value={activeOrganization ?? ""}
+        options={organizations}
+        onChange={handleOrganizationChange}
+      />
     </div>
   );
 };
