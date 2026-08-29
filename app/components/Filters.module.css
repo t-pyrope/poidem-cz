@@ -1,9 +1,11 @@
 /* ---------- CATEGORY PILLS ---------- */
 .cats {
+    margin-bottom: 20px;
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     padding: 36px 0 8px;
+    align-items: center;
 }
 .cat {
     font-family: var(--font-plex-mono), monospace;

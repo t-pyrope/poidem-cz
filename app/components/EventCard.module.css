@@ -51,6 +51,7 @@
 .dayOfWeek {
     color: rgba(242, 237, 227, 0.55);
     font-size: 0.8em;
+    margin-top: 4px;
 }
 
 .perf {
@@ -121,6 +122,9 @@
 .meta {
     font-size: 14px;
     color: rgba(242, 237, 227, 0.55);
+    display: flex;
+    gap: 1ch;
+    align-items: center;
 }
 
 .linkSection {

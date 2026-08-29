@@ -1,0 +1,38 @@
+.btnPrimary,
+.btnGhost {
+    font-family: var(--font-inter), sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 13px 26px;
+    border-radius: 100px;
+    cursor: pointer;
+    border: none;
+    transition: transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+
+    display: flex;
+    align-items: center;
+    gap: 1ch;
+}
+
+.btnPrimary {
+    background: var(--lamp);
+    color: var(--night-deep);
+}
+
+.btnPrimary:hover {
+    background: var(--lamp-darker);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 18%);
+    transform: translateY(-1px);
+}
+
+.btnGhost {
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid var(--line);
+}
+
+.btnGhost:hover {
+    background: rgb(255 255 255 / 8%);
+    box-shadow: 0 8px 20px rgb(0 0 0 / 12%);
+    transform: translateY(-2px);
+}
