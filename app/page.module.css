@@ -13,12 +13,19 @@
   font-family: var(--font-inter), sans-serif;
   line-height: 1.5;
   overflow-x: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .wrap {
   max-width: 1080px;
-  margin: 0 auto;
+  width: 100%;
   padding: 0 24px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ---------- HERO ---------- */
@@ -111,7 +118,7 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
-  margin-top: 60px;
+  flex-grow: 1;
 }
 
 /* ---------- DIGEST CTA ---------- */
