@@ -7,7 +7,7 @@ type SelectProps = {
   ariaLabel: string;
   emptyOptionLabel: string;
   onChange: (value: string) => void;
-  options: string[];
+  options: { value: string; label: string }[];
   value: string;
 };
 
@@ -27,8 +27,8 @@ export const Select = ({
     >
       <option value="">{emptyOptionLabel}</option>
       {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
+        <option key={option.value} value={option.value}>
+          {option.label}
         </option>
       ))}
     </select>

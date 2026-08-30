@@ -168,6 +168,11 @@
 }
 
 @media (max-width: 560px) {
+  .hero {
+    position: relative;
+    padding: 40px 0 20px;
+  }
+
   .digest {
     padding: 34px 24px;
   }

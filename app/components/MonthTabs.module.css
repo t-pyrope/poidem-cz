@@ -1,5 +1,6 @@
 .tabsOuter {
   position: absolute;
+  z-index: 1;
   left: 0;
   right: 0;
   display: flex;
@@ -28,6 +29,7 @@
   font-weight: 500;
   line-height: 1.1;
   text-align: center;
+  touch-action: manipulation;
   transition: background-color 160ms ease, color 160ms ease;
 }
 
@@ -55,7 +57,7 @@
 
 @media (max-width: 480px) {
   .tabs {
-    margin-top: 22px;
+    /*margin-top: 22px;*/
     border-radius: 12px;
   }
 

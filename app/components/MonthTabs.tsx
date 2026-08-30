@@ -39,6 +39,7 @@ export const MonthTabs = () => {
               key={month.value}
               className={`${styles.tab} ${isActive ? styles.tabActive : ""}`}
               aria-pressed={isActive}
+              aria-label={`Показать события за ${month.label}`}
               onClick={() => handleMonthChange(month.value)}
             >
               {month.label}
