@@ -56,7 +56,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     if (category) {
       params.set("category", category);
     } else {
-      params.delete("category", category);
+      params.delete("category");
     }
     const query = params.toString();
 
