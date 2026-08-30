@@ -15,11 +15,11 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
   const activeCategory = searchParams.get("category");
   const activeOrganization = searchParams.get("organization");
 
-  const organizations = [
-    ...new Set(events.map((event) => event.organization)),
-  ].sort((a, b) => a.localeCompare(b));
+  const organizations = [...new Set(events.map((event) => event.organization))]
+    .sort((a, b) => a.localeCompare(b))
+    .map((org) => ({ value: org, label: org }));
 
-  const categories: { categoryName: string; count: number }[] = events
+  const categories = events
     .reduce(
       (acc, next) => {
         const newCategories = next.tags.filter(
@@ -40,16 +40,24 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
       },
       [] as { categoryName: string; count: number }[],
     )
-    .sort((a, b) => b.count - a.count);
+    .sort((a, b) => b.count - a.count)
+    .map((cat) => ({
+      value: cat.categoryName,
+      label: `${getTagName(cat.categoryName)} (${cat.count})`,
+    }));
 
-  const handleCategoryClick = (category: string) => {
+  const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(searchParams);
 
     if (activeCategory === category) {
       return;
     }
 
-    params.set("category", category);
+    if (category) {
+      params.set("category", category);
+    } else {
+      params.delete("category", category);
+    }
     const query = params.toString();
 
     router.push(query ? `/?${query}` : "/", {
@@ -79,29 +87,14 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
 
   return (
     <div className={styles.cats}>
-      <span
-        className={`${styles.cat} ${!activeCategory ? styles.catActive : ""}`}
-        onClick={() => {
-          if (!activeCategory) return;
+      <Select
+        ariaLabel="Категория"
+        emptyOptionLabel="Все категории"
+        value={activeCategory ?? ""}
+        options={categories}
+        onChange={handleCategoryChange}
+      />
 
-          router.push("/", {
-            scroll: false,
-          });
-        }}
-      >
-        Все ({events.length})
-      </span>
-      {categories.map((cat) => (
-        <span
-          key={cat.categoryName}
-          className={`${styles.cat} ${
-            activeCategory === cat.categoryName ? styles.catActive : ""
-          }`}
-          onClick={() => handleCategoryClick(cat.categoryName)}
-        >
-          {getTagName(cat.categoryName)} ({cat.count})
-        </span>
-      ))}
       <Select
         ariaLabel="Организатор"
         emptyOptionLabel="Все организаторы"

@@ -85,28 +85,28 @@ export default async function Home({
           {eventsToDisplay.length === 0 && "Нет событий"}
         </div>
 
-        <div className={styles.digest}>
-          <div>
-            <h2 className={styles.digestTitle}>Дайджест по пятницам</h2>
-            <p className={styles.digestText}>
-              Пять событий на следующую неделю — прямо на почту, без спама и
-              рекламы.
-            </p>
-          </div>
-          <form className={styles.digestForm}>
-            <input
-              type="email"
-              placeholder="ваш email"
-              aria-label="Email для дайджеста"
-              className={styles.input}
-            />
-            <Button>Подписаться</Button>
-          </form>
-        </div>
+        {/*<div className={styles.digest}>*/}
+        {/*  <div>*/}
+        {/*    <h2 className={styles.digestTitle}>Дайджест по пятницам</h2>*/}
+        {/*    <p className={styles.digestText}>*/}
+        {/*      Пять событий на следующую неделю — прямо на почту, без спама и*/}
+        {/*      рекламы.*/}
+        {/*    </p>*/}
+        {/*  </div>*/}
+        {/*  <form className={styles.digestForm}>*/}
+        {/*    <input*/}
+        {/*      type="email"*/}
+        {/*      placeholder="ваш email"*/}
+        {/*      aria-label="Email для дайджеста"*/}
+        {/*      className={styles.input}*/}
+        {/*    />*/}
+        {/*    <Button>Подписаться</Button>*/}
+        {/*  </form>*/}
+        {/*</div>*/}
 
         <footer className={styles.footer}>
           <span>Пойдём — афиша русскоязычной Праги</span>
-          <span>Прага, 2026</span>
+          <span>© 2026 Alina Isachanka · Marmalade skies s.r.o.</span>
         </footer>
       </div>
     </main>

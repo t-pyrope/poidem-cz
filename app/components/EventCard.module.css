@@ -129,6 +129,8 @@
 
 .linkSection {
     padding: 20px 26px;
+    display: flex;
+    align-items: flex-start;
 }
 
 .link {
