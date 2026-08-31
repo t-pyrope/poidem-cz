@@ -1,27 +1,8 @@
-import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
 import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
 import { Filters } from "@/app/components/Filters/Filters";
 import dayjs from "dayjs";
-
-const plexSerif = IBM_Plex_Serif({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600"],
-  variable: "--font-plex-serif",
-});
-
-const inter = Inter({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-});
-
-const plexMono = IBM_Plex_Mono({
-  subsets: ["latin", "cyrillic"],
-  weight: ["400", "500"],
-  variable: "--font-plex-mono",
-});
 
 export default async function Home({
   searchParams,
@@ -58,9 +39,7 @@ export default async function Home({
   });
 
   return (
-    <main
-      className={`${styles.page} ${plexSerif.variable} ${inter.variable} ${plexMono.variable}`}
-    >
+    <main className={styles.page}>
       <section className={styles.hero}>
         <span className={`${styles.lampDot} ${styles.dot1}`} />
         <span className={`${styles.lampDot} ${styles.dot2}`} />
