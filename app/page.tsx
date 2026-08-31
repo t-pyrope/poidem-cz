@@ -2,9 +2,7 @@ import { Inter, IBM_Plex_Mono, IBM_Plex_Serif } from "next/font/google";
 import styles from "./page.module.css";
 import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
-import { Filters } from "@/app/components/Filters";
-import { Button } from "@/app/components/Button";
-import { MonthTabs } from "@/app/components/MonthTabs";
+import { Filters } from "@/app/components/Filters/Filters";
 import dayjs from "dayjs";
 
 const plexSerif = IBM_Plex_Serif({
@@ -31,16 +29,12 @@ export default async function Home({
   searchParams: Promise<{
     category?: string;
     organization?: string;
-    month?: string;
+    from?: string;
+    to?: string;
   }>;
 }) {
   const params = await searchParams;
-  const category = params.category;
-  const organization = params.organization;
-  const month =
-    params.month && /^\d{4}-(0[1-9]|1[0-2])$/.test(params.month)
-      ? params.month
-      : "2026-09";
+  const { category, organization, from, to } = params;
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
@@ -49,12 +43,19 @@ export default async function Home({
     },
   });
 
-  const eventsToDisplay = events.filter(
-    (event) =>
+  const eventsToDisplay = events.filter((event) => {
+    const eventDate = dayjs(event.date);
+
+    const afterFrom = !from || !eventDate.isBefore(dayjs(from), "day");
+    const beforeTo = !to || !eventDate.isAfter(dayjs(to), "day");
+
+    return (
       (!category || event.tags.includes(category)) &&
       (!organization || event.organization === organization) &&
-      dayjs(event.date).format("YYYY-MM") === month,
-  );
+      afterFrom &&
+      beforeTo
+    );
+  });
 
   return (
     <main
@@ -76,8 +77,6 @@ export default async function Home({
 
       <div className={styles.wrap}>
         <Filters events={events} />
-        <MonthTabs />
-
         <div className={styles.feed}>
           {eventsToDisplay.map((ev, i) => (
             <EventCard eventItem={ev} index={i} key={ev.title} />

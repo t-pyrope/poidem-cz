@@ -1,16 +1,18 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 import { EventItem } from "@/app/types";
 import { getTagName } from "@/app/utils";
 
 import styles from "./Filters.module.css";
-import { Select } from "./Select";
+import { Select } from "../Select";
+import { DateFilter } from "@/app/components/Filters/DateFilter";
+import { useUpdateParams } from "@/app/components/Filters/utils";
 
 export const Filters = ({ events }: { events: EventItem[] }) => {
-  const router = useRouter();
   const searchParams = useSearchParams();
+  const { updateParams } = useUpdateParams();
 
   const activeCategory = searchParams.get("category");
   const activeOrganization = searchParams.get("organization");
@@ -27,13 +29,13 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
         );
 
         return [
-          ...acc.map((oldCategory) => {
-            return next.tags.find((tag) => tag === oldCategory.categoryName)
+          ...acc.map((oldCategory) =>
+            next.tags.includes(oldCategory.categoryName)
               ? { ...oldCategory, count: oldCategory.count + 1 }
-              : oldCategory;
-          }),
-          ...newCategories.map((newCategory) => ({
-            categoryName: newCategory,
+              : oldCategory,
+          ),
+          ...newCategories.map((categoryName) => ({
+            categoryName,
             count: 1,
           })),
         ];
@@ -47,42 +49,11 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     }));
 
   const handleCategoryChange = (category: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    if (activeCategory === category) {
-      return;
-    }
-
-    if (category) {
-      params.set("category", category);
-    } else {
-      params.delete("category");
-    }
-    const query = params.toString();
-
-    router.push(query ? `/?${query}` : "/", {
-      scroll: false,
-    });
+    updateParams({ category });
   };
 
   const handleOrganizationChange = (organization: string) => {
-    const params = new URLSearchParams(searchParams);
-
-    if (activeOrganization === organization) {
-      return;
-    }
-
-    if (organization) {
-      params.set("organization", organization);
-    } else {
-      params.delete("organization");
-    }
-
-    const query = params.toString();
-
-    router.push(query ? `/?${query}` : "/", {
-      scroll: false,
-    });
+    updateParams({ organization });
   };
 
   return (
@@ -102,6 +73,8 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
         options={organizations}
         onChange={handleOrganizationChange}
       />
+
+      <DateFilter />
     </div>
   );
 };
