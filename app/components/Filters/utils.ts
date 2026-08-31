@@ -9,6 +9,7 @@ export const useUpdateParams = () => {
     organization?: string;
     from?: string;
     to?: string;
+    lang?: string;
   }) => {
     const params = new URLSearchParams(searchParams);
 

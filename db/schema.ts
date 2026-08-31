@@ -10,6 +10,7 @@ export const events = pgTable("events", {
   organization: text("organization").notNull(),
   address: text("address").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  lang: text("lang").notNull().default("ru"),
 });
 
 export const eventPrices = pgTable("event_prices", {

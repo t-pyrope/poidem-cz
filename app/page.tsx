@@ -12,10 +12,11 @@ export default async function Home({
     organization?: string;
     from?: string;
     to?: string;
+    lang?: string;
   }>;
 }) {
   const params = await searchParams;
-  const { category, organization, from, to } = params;
+  const { category, organization, from, to, lang } = params;
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
@@ -33,6 +34,7 @@ export default async function Home({
     return (
       (!category || event.tags.includes(category)) &&
       (!organization || event.organization === organization) &&
+      (!lang || event.lang === lang) &&
       afterFrom &&
       beforeTo
     );

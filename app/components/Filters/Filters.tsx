@@ -16,6 +16,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
 
   const activeCategory = searchParams.get("category");
   const activeOrganization = searchParams.get("organization");
+  const activeLang = searchParams.get("lang") ?? "";
 
   const organizations = [...new Set(events.map((event) => event.organization))]
     .sort((a, b) => a.localeCompare(b))
@@ -56,6 +57,10 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     updateParams({ organization });
   };
 
+  const handleLangChange = (lang: string) => {
+    updateParams({ lang });
+  };
+
   return (
     <div className={styles.cats}>
       <Select
@@ -75,6 +80,18 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
       />
 
       <DateFilter />
+
+      <Select
+        ariaLabel="Язык"
+        emptyOptionLabel="Все языки"
+        onChange={handleLangChange}
+        options={[
+          { value: "ru", label: "Русский" },
+          { value: "cs", label: "Чешский" },
+          { value: "en", label: "Английский" },
+        ]}
+        value={activeLang}
+      />
     </div>
   );
 };
