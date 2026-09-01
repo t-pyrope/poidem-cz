@@ -3,8 +3,16 @@ import { SocialButton } from "@/app/components/SocialButton";
 import styles from "../page.module.css";
 import Image from "next/image";
 import Link from "next/link";
+import { getUser } from "@/lib/auth/user";
+import { redirect } from "next/navigation";
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const { session } = await getUser();
+
+  if (session?.user) {
+    redirect("/add-event");
+  }
+
   return (
     <Box
       component="main"
