@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./Button.module.css";
 import { ReactNode } from "react";
+import { Button as MuiButton } from "@mui/material";
 
 export const Button = ({
   href,
@@ -19,22 +20,17 @@ export const Button = ({
 
   return href ? (
     href.startsWith("http") ? (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={className}
-      >
+      <MuiButton href={href} target="_blank" rel="noopener noreferrer">
         {children}
-      </a>
+      </MuiButton>
     ) : (
       <Link href={href} className={className}>
         {children}
       </Link>
     )
   ) : (
-    <button onClick={onClick} type={type} className={className}>
+    <MuiButton onClick={onClick} type={type}>
       {children}
-    </button>
+    </MuiButton>
   );
 };

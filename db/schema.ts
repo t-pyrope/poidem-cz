@@ -1,5 +1,12 @@
 import { relations } from "drizzle-orm";
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import {
+  integer,
+  pgTable,
+  text,
+  timestamp,
+  uniqueIndex,
+  uuid,
+} from "drizzle-orm/pg-core";
 
 export const events = pgTable("events", {
   id: uuid("id").primaryKey(),
@@ -32,3 +39,27 @@ export const eventPricesRelations = relations(eventPrices, ({ one }) => ({
     references: [events.id],
   }),
 }));
+
+export const users = pgTable("users", {
+  id: uuid("id").primaryKey(),
+  email: text("email").unique(),
+  password: text("password"),
+});
+
+export const accounts = pgTable(
+  "accounts",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    provider: text("provider").notNull(),
+    providerAccountId: text("provider_account_id").notNull(),
+  },
+  (table) => [
+    uniqueIndex("accounts_provider_provider_account_id_unique").on(
+      table.provider,
+      table.providerAccountId,
+    ),
+  ],
+);

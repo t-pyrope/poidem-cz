@@ -3,6 +3,8 @@ import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
 import { Filters } from "@/app/components/Filters/Filters";
 import dayjs from "dayjs";
+import { AppHeader } from "@/app/components/AppHeader";
+import { AppFooter } from "@/app/components/AppFooter";
 
 export default async function Home({
   searchParams,
@@ -42,6 +44,8 @@ export default async function Home({
 
   return (
     <main className={styles.page}>
+      <AppHeader />
+
       <section className={styles.hero}>
         <span className={`${styles.lampDot} ${styles.dot1}`} />
         <span className={`${styles.lampDot} ${styles.dot2}`} />
@@ -84,10 +88,7 @@ export default async function Home({
         {/*  </form>*/}
         {/*</div>*/}
 
-        <footer className={styles.footer}>
-          <span>Пойдём — афиша русскоязычной Праги</span>
-          <span>© 2026 Alina Isachanka · Marmalade skies s.r.o.</span>
-        </footer>
+        <AppFooter />
       </div>
     </main>
   );

@@ -71,6 +71,14 @@ export const theme = createTheme({
       fontFamily: "var(--font-plex-serif), serif",
       fontWeight: 500,
     },
+    h4: {
+      fontFamily: "var(--font-plex-serif), serif",
+      fontWeight: 500,
+    },
+    h5: {
+      fontFamily: "var(--font-plex-serif), serif",
+      fontWeight: 500,
+    },
     button: {
       fontFamily: "var(--font-inter), sans-serif",
       fontWeight: 600,
@@ -103,6 +111,7 @@ export const theme = createTheme({
       defaultProps: {
         color: "primary",
         disableElevation: true,
+        disableRipple: true,
       },
       styleOverrides: {
         root: ({ theme }) => ({
@@ -298,6 +307,13 @@ export const theme = createTheme({
           "&:hover": {
             textDecorationColor: "currentColor",
           },
+        }),
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
         }),
       },
     },
