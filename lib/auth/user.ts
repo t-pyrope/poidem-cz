@@ -32,7 +32,12 @@ export async function getUser() {
   const session = await getServerSession(authOptions);
   let user;
 
-  if (session) {
+  if (
+    session &&
+    session.user &&
+    "id" in session.user &&
+    typeof session.user.id === "string"
+  ) {
     user = await db.query.users.findFirst({
       where: eq(users.id, session.user.id),
     });

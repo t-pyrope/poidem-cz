@@ -281,7 +281,7 @@ export const authOptions = {
       return token;
     },
     async session({ session, token }) {
-      if (session.user && token.sub) {
+      if (session.user && token.sub && "id" in session.user) {
         session.user.id = token.sub;
       }
 
