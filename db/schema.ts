@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   integer,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -14,7 +15,8 @@ export const events = pgTable("events", {
   link: text("link").notNull(),
   date: timestamp("date").notNull(),
   tags: text("tags").array().notNull(),
-  organization: text("organization").notNull(),
+  organization: text("organization"),
+  organizer: text("organizer"),
   address: text("address").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lang: text("lang").notNull().default("ru"),
@@ -40,10 +42,13 @@ export const eventPricesRelations = relations(eventPrices, ({ one }) => ({
   }),
 }));
 
+export const userRoleEnum = pgEnum("user_role", ["user", "admin"]);
+
 export const users = pgTable("users", {
   id: uuid("id").primaryKey(),
   email: text("email").unique(),
   password: text("password"),
+  role: userRoleEnum("role").notNull().default("user"),
 });
 
 export const accounts = pgTable(
