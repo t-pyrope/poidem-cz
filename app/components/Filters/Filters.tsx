@@ -18,7 +18,13 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
   const activeOrganization = searchParams.get("organization");
   const activeLang = searchParams.get("lang") ?? "";
 
-  const organizations = [...new Set(events.map((event) => event.organization))]
+  const organizations = [
+    ...new Set(
+      events
+        .map((event) => event.organization)
+        .filter((org): org is string => !!org),
+    ),
+  ]
     .sort((a, b) => a.localeCompare(b))
     .map((org) => ({ value: org, label: org }));
 

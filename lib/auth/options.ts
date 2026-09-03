@@ -134,6 +134,7 @@ async function resolveOAuthUserId(
             id: users.id,
             email: users.email,
             password: users.password,
+            role: users.role,
           });
 
         linkedUser = createdUser;
