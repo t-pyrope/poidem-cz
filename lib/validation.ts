@@ -16,4 +16,4 @@ export const eventSchema = z.object({
   maxPrice: z.coerce.number().min(0),
 });
 
-export type EventFromForm = z.infer<typeof eventSchema>;
+export type EventFormValues = z.infer<typeof eventSchema>;

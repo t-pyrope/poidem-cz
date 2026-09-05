@@ -183,7 +183,7 @@ export const theme = createTheme({
           },
         }),
         input: {
-          padding: "12px 18px",
+          // padding: "12px 18px",
         },
       },
     },
@@ -210,7 +210,7 @@ export const theme = createTheme({
         select: {
           fontFamily: "var(--font-plex-mono), monospace",
           fontSize: "0.78125rem",
-          padding: "8px 38px 8px 16px",
+          // padding: "8px 38px 8px 16px",
         },
         icon: ({ theme }) => ({
           color: theme.palette.text.secondary,

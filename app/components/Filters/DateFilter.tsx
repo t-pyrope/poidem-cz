@@ -6,9 +6,6 @@ import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useUpdateParams } from "@/app/components/Filters/utils";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { ruRU } from "@mui/x-date-pickers/locales";
 
 import "dayjs/locale/ru";
 
@@ -113,13 +110,7 @@ export const DateFilter = () => {
   }
 
   return (
-    <LocalizationProvider
-      dateAdapter={AdapterDayjs}
-      adapterLocale="ru"
-      localeText={
-        ruRU.components.MuiLocalizationProvider.defaultProps.localeText
-      }
-    >
+    <>
       <Select
         ariaLabel="Дата"
         emptyOptionLabel="Любая дата"
@@ -146,6 +137,6 @@ export const DateFilter = () => {
           },
         }}
       />
-    </LocalizationProvider>
+    </>
   );
 };

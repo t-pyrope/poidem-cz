@@ -1,8 +1,8 @@
 import { FROM_EMAIL, getResendClient } from "@/lib/email/client";
 import { User } from "@/app/types";
-import { EventFromForm } from "@/lib/validation";
+import { EventFormValues } from "@/lib/validation";
 
-export async function sendNewEventEmail(event: EventFromForm, user: User) {
+export async function sendNewEventEmail(event: EventFormValues, user: User) {
   const resend = getResendClient();
 
   await resend.emails.send({

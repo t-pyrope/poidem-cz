@@ -43,53 +43,53 @@ export default async function Home({
   });
 
   return (
-    <main className={styles.page}>
+    <>
       <AppHeader />
+      <main className={styles.page}>
+        <section className={styles.hero}>
+          <span className={`${styles.lampDot} ${styles.dot1}`} />
+          <span className={`${styles.lampDot} ${styles.dot2}`} />
+          <span className={`${styles.lampDot} ${styles.dot3}`} />
+          <span className={`${styles.lampDot} ${styles.dot4}`} />
+          <div className={styles.wrap}>
+            <div className={styles.eyebrow}>Прага, каждый день</div>
+            <h1 className={styles.h1}>Пойдём — афиша мероприятий в Праге</h1>
+            <p className={styles.heroText}>
+              Встречи, выставки, концерты, спектакли и многое другое
+            </p>
+          </div>
+        </section>
 
-      <section className={styles.hero}>
-        <span className={`${styles.lampDot} ${styles.dot1}`} />
-        <span className={`${styles.lampDot} ${styles.dot2}`} />
-        <span className={`${styles.lampDot} ${styles.dot3}`} />
-        <span className={`${styles.lampDot} ${styles.dot4}`} />
         <div className={styles.wrap}>
-          <div className={styles.eyebrow}>Прага, каждый день</div>
-          <h1 className={styles.h1}>Пойдём — афиша мероприятий в Праге</h1>
-          <p className={styles.heroText}>
-            Встречи, выставки, концерты, спектакли и многое другое
-          </p>
+          <Filters events={events} />
+          <div className={styles.feed}>
+            {eventsToDisplay.map((ev, i) => (
+              <EventCard eventItem={ev} index={i} key={ev.title} />
+            ))}
+            {eventsToDisplay.length === 0 && "Нет событий"}
+          </div>
+
+          {/*<div className={styles.digest}>*/}
+          {/*  <div>*/}
+          {/*    <h2 className={styles.digestTitle}>Дайджест по пятницам</h2>*/}
+          {/*    <p className={styles.digestText}>*/}
+          {/*      Пять событий на следующую неделю — прямо на почту, без спама и*/}
+          {/*      рекламы.*/}
+          {/*    </p>*/}
+          {/*  </div>*/}
+          {/*  <form className={styles.digestForm}>*/}
+          {/*    <input*/}
+          {/*      type="email"*/}
+          {/*      placeholder="ваш email"*/}
+          {/*      aria-label="Email для дайджеста"*/}
+          {/*      className={styles.input}*/}
+          {/*    />*/}
+          {/*    <Button>Подписаться</Button>*/}
+          {/*  </form>*/}
+          {/*</div>*/}
         </div>
-      </section>
-
-      <div className={styles.wrap}>
-        <Filters events={events} />
-        <div className={styles.feed}>
-          {eventsToDisplay.map((ev, i) => (
-            <EventCard eventItem={ev} index={i} key={ev.title} />
-          ))}
-          {eventsToDisplay.length === 0 && "Нет событий"}
-        </div>
-
-        {/*<div className={styles.digest}>*/}
-        {/*  <div>*/}
-        {/*    <h2 className={styles.digestTitle}>Дайджест по пятницам</h2>*/}
-        {/*    <p className={styles.digestText}>*/}
-        {/*      Пять событий на следующую неделю — прямо на почту, без спама и*/}
-        {/*      рекламы.*/}
-        {/*    </p>*/}
-        {/*  </div>*/}
-        {/*  <form className={styles.digestForm}>*/}
-        {/*    <input*/}
-        {/*      type="email"*/}
-        {/*      placeholder="ваш email"*/}
-        {/*      aria-label="Email для дайджеста"*/}
-        {/*      className={styles.input}*/}
-        {/*    />*/}
-        {/*    <Button>Подписаться</Button>*/}
-        {/*  </form>*/}
-        {/*</div>*/}
-
-        <AppFooter />
-      </div>
-    </main>
+      </main>
+      <AppFooter />
+    </>
   );
 }

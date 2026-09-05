@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import { EventItem } from "@/app/types";
+import { EventItem, Tag } from "@/app/types";
 import { getTagName } from "@/app/utils";
 
 import styles from "./Filters.module.css";
@@ -52,7 +52,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     .sort((a, b) => b.count - a.count)
     .map((cat) => ({
       value: cat.categoryName,
-      label: `${getTagName(cat.categoryName)} (${cat.count})`,
+      label: `${getTagName(cat.categoryName as Tag)} (${cat.count})`,
     }));
 
   const handleCategoryChange = (category: string) => {

@@ -24,13 +24,13 @@ export const AppHeader = async () => {
             <Image src="/icon.png" alt="App icon" width={50} height={50} />
           </Link>
           <Stack direction="row" spacing={1}>
-            {/*<Button>Войти</Button>*/}
-            {/*<Button*/}
-            {/*  variant="contained"*/}
-            {/*  href={session ? "/add-event" : "/login"}*/}
-            {/*>*/}
-            {/*  Добавить событие*/}
-            {/*</Button>*/}
+            {!session && <Button>Войти</Button>}
+            <Button
+              variant="contained"
+              href={session ? "/add-event" : "/login"}
+            >
+              Добавить событие
+            </Button>
           </Stack>
         </Toolbar>
       </AppBar>

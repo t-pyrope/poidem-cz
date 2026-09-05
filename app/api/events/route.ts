@@ -56,7 +56,10 @@ export async function POST(req: Request) {
     } else {
       await sendNewEventEmail(data, user);
     }
+
+    return NextResponse.json({ ok: true });
   } catch (e) {
     console.error(e);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

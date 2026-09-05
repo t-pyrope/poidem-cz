@@ -1,4 +1,6 @@
-export const getTagName = (tag: string) => {
+import { Tag } from "@/app/types";
+
+export const getTagName = (tag: Tag) => {
   switch (tag) {
     case "festival":
       return "Фестиваль";

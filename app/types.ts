@@ -10,3 +10,14 @@ export type EventWithPrices = EventItem & {
 };
 
 export type User = InferSelectModel<typeof users>;
+
+export type Tag =
+  | "festival"
+  | "workshop"
+  | "film"
+  | "performance"
+  | "komentovaná prohlídka"
+  | "výstava"
+  | "diskuze"
+  | "charita"
+  | "děti";

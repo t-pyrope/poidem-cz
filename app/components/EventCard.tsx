@@ -1,4 +1,4 @@
-import { EventWithPrices } from "@/app/types";
+import { EventWithPrices, Tag } from "@/app/types";
 import dayjs from "dayjs";
 import { FiExternalLink } from "react-icons/fi";
 import { FaMapMarkerAlt } from "react-icons/fa";
@@ -7,7 +7,7 @@ import "dayjs/locale/ru";
 
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
-import { Button } from "@/app/components/Button";
+import { Button } from "@mui/material";
 
 const monthsDative = [
   "января",
@@ -68,7 +68,7 @@ export const EventCard = ({
         <div className={styles.tags}>
           {eventItem.tags.map((tag) => (
             <span className={styles.tag} key={tag}>
-              {getTagName(tag)}
+              {getTagName(tag as Tag)}
             </span>
           ))}
         </div>
@@ -85,8 +85,12 @@ export const EventCard = ({
       </div>
 
       <div className={styles.linkSection}>
-        <Button href={eventItem.link}>
-          Перейти <FiExternalLink />
+        <Button
+          href={eventItem.link}
+          variant="contained"
+          endIcon={<FiExternalLink />}
+        >
+          Перейти
         </Button>
       </div>
     </article>
