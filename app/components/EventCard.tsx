@@ -35,7 +35,7 @@ export const EventCard = ({
   const dayOfWeek = date.format("dddd");
   const prices = eventItem.prices.sort((a, b) => a.amount - b.amount);
 
-  let priceMessage = "";
+  let priceMessage = "Неизвестно";
 
   if (prices.length === 1) {
     priceMessage = !prices[0]?.amount
@@ -76,7 +76,7 @@ export const EventCard = ({
         <h3 className={styles.detailsTitle}>{eventItem.title}</h3>
         <span className={styles.meta}>
           <FaMapMarkerAlt />
-          {eventItem.address} ({eventItem.organization})
+          {eventItem.address} ({eventItem.organization || eventItem.organizer})
         </span>
         <span className={styles.meta}>
           <FaMoneyBillAlt />
