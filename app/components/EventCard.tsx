@@ -41,7 +41,7 @@ export const EventCard = ({
     priceMessage = !prices[0]?.amount
       ? "Бесплатно"
       : `${prices[0]?.amount} крон`;
-  } else {
+  } else if (prices.length > 1) {
     priceMessage =
       "От " +
       (prices[0]?.amount || 0) +
