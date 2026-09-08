@@ -88,6 +88,8 @@ export const EventCard = ({
         <Button
           href={eventItem.link}
           variant="contained"
+          target="_blank"
+          rel="noopener noreferrer"
           endIcon={<FiExternalLink />}
         >
           Перейти

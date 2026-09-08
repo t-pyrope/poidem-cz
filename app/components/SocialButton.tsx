@@ -13,7 +13,6 @@ export const SocialButton = ({ social }: { social: "github" | "google" }) => {
     <Button
       variant="contained"
       color="inherit"
-      disabled={social === "github"}
       className={`${buttonClassNames}`}
       onClick={() => signIn(social)}
     >
