@@ -24,7 +24,7 @@ export const AppHeader = async () => {
             <Image src="/icon.png" alt="App icon" width={50} height={50} />
           </Link>
           <Stack direction="row" spacing={1}>
-            {!session && <Button>Войти</Button>}
+            {!session && <Button href="/login">Войти</Button>}
             <Button
               variant="contained"
               href={session ? "/add-event" : "/login"}

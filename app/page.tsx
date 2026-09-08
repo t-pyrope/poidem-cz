@@ -64,7 +64,7 @@ export default async function Home({
           <Filters events={events} />
           <div className={styles.feed}>
             {eventsToDisplay.map((ev, i) => (
-              <EventCard eventItem={ev} index={i} key={ev.title} />
+              <EventCard eventItem={ev} index={i} key={ev.id} />
             ))}
             {eventsToDisplay.length === 0 && "Нет событий"}
           </div>
