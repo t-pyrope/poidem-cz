@@ -2,6 +2,7 @@ import { AppBar, Box, Button, Stack, Toolbar } from "@mui/material";
 import Link from "next/link";
 import Image from "next/image";
 import { getUser } from "@/lib/auth/user";
+import { LogoutButton } from "@/app/components/LogoutButton";
 
 export const AppHeader = async () => {
   const { session } = await getUser();
@@ -25,12 +26,15 @@ export const AppHeader = async () => {
           </Link>
           <Stack direction="row" spacing={1}>
             {!session && <Button href="/login">Войти</Button>}
+
             <Button
               variant="contained"
               href={session ? "/add-event" : "/login"}
             >
               Добавить событие
             </Button>
+
+            {session && <LogoutButton />}
           </Stack>
         </Toolbar>
       </AppBar>
