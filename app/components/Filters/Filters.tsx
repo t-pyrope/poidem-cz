@@ -85,7 +85,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
         onChange={handleOrganizationChange}
       />
 
-      <DateFilter />
+      <DateFilter events={events} />
 
       <Select
         ariaLabel="Язык"

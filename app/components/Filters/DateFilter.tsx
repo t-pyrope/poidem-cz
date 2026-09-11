@@ -8,10 +8,12 @@ import { useSearchParams } from "next/navigation";
 import { useUpdateParams } from "@/app/components/Filters/utils";
 
 import "dayjs/locale/ru";
+import { EventItem } from "@/app/types";
 
 const CUSTOM_DATE = "__custom__";
+dayjs.locale("ru");
 
-export const DateFilter = () => {
+export const DateFilter = ({ events }: { events: EventItem[] }) => {
   const searchParams = useSearchParams();
   const { updateParams } = useUpdateParams();
 
@@ -78,12 +80,32 @@ export const DateFilter = () => {
   const endOfNextWeekString = endOfNextWeek.format("YYYY-MM-DD");
   const nextWeekOption = `${startOfNextWeekString}/${endOfNextWeekString}`;
 
+  const datesWithDuplicates = events.map(({ date }) =>
+    dayjs(date).format("YYYY-MM-DD"),
+  );
+  const enableDates = Array.from(new Set(datesWithDuplicates));
+
   const dateOptions = [
-    { value: todayOption, label: "Сегодня" },
-    { value: tomorrowOption, label: "Завтра" },
-    { value: thisWeekOption, label: "На этой неделе" },
-    { value: thisWeekendOption, label: "На этих выходных" },
-    { value: nextWeekOption, label: "На следующей неделе" },
+    {
+      value: todayOption,
+      label: `Сегодня (${datesWithDuplicates.filter((date) => date === todayOption).length})`,
+    },
+    {
+      value: tomorrowOption,
+      label: `Завтра (${datesWithDuplicates.filter((date) => date === tomorrowOption).length})`,
+    },
+    {
+      value: thisWeekOption,
+      label: `На этой неделе (${datesWithDuplicates.filter((date) => date >= todayString && date <= endOfWeekString).length})`,
+    },
+    {
+      value: thisWeekendOption,
+      label: `На этих выходных (${datesWithDuplicates.filter((date) => date >= startOfWeekendString && date <= endOfWeekString).length})`,
+    },
+    {
+      value: nextWeekOption,
+      label: `На следующей неделе (${datesWithDuplicates.filter((date) => date >= startOfNextWeekString && date <= endOfNextWeekString).length})`,
+    },
     { value: CUSTOM_DATE, label: "Выбрать дату" },
   ];
 
@@ -126,6 +148,9 @@ export const DateFilter = () => {
         onChange={setPickerDate}
         onAccept={handleCustomDateAccept}
         disablePast={true}
+        shouldDisableDate={(day) =>
+          !enableDates.includes(day.format("YYYY-MM-DD"))
+        }
         slotProps={{
           textField: {
             sx: {
