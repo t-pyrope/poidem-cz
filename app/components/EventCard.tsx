@@ -8,7 +8,8 @@ import "dayjs/locale/ru";
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
 import { Button } from "@mui/material";
-import { Business, Person } from "@mui/icons-material";
+import { Business, Person, Telegram } from "@mui/icons-material";
+import { ThreadsIcon } from "@/app/components/ThreadsIcon";
 
 const monthsDative = [
   "января",
@@ -53,6 +54,14 @@ export const EventCard = ({
 
   const organizer = eventItem.organization || eventItem.organizer;
   const isOrganization = !!eventItem.organization;
+
+  const openIcon = eventItem.link.includes("//t.me/") ? (
+    <Telegram />
+  ) : eventItem.link.includes("//www.threads.com/") ? (
+    <ThreadsIcon />
+  ) : (
+    <FiExternalLink />
+  );
 
   return (
     <article
@@ -103,7 +112,7 @@ export const EventCard = ({
           variant="contained"
           target="_blank"
           rel="noopener noreferrer"
-          endIcon={<FiExternalLink />}
+          endIcon={openIcon}
         >
           Перейти
         </Button>
