@@ -8,6 +8,7 @@ import "dayjs/locale/ru";
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
 import { Button } from "@mui/material";
+import { Business, Person } from "@mui/icons-material";
 
 const monthsDative = [
   "января",
@@ -50,6 +51,9 @@ export const EventCard = ({
       " крон";
   }
 
+  const organizer = eventItem.organization || eventItem.organizer;
+  const isOrganization = !!eventItem.organization;
+
   return (
     <article
       key={eventItem.title}
@@ -76,7 +80,16 @@ export const EventCard = ({
         <h3 className={styles.detailsTitle}>{eventItem.title}</h3>
         <span className={styles.meta}>
           <FaMapMarkerAlt />
-          {eventItem.address} ({eventItem.organization || eventItem.organizer})
+          {eventItem.address}{" "}
+          <span>
+            (
+            {isOrganization ? (
+              <Business fontSize="inherit" sx={{ marginBottom: "3px" }} />
+            ) : (
+              <Person fontSize="inherit" sx={{ marginBottom: "3px" }} />
+            )}{" "}
+            {organizer})
+          </span>
         </span>
         <span className={styles.meta}>
           <FaMoneyBillAlt />
