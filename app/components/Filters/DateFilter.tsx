@@ -17,8 +17,33 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
   const searchParams = useSearchParams();
   const { updateParams } = useUpdateParams();
 
-  const activeFrom = searchParams.get("from");
-  const activeTo = searchParams.get("to");
+  const today = dayjs();
+  const todayString = today.format("YYYY-MM-DD");
+  const todayOption = `${todayString}/${todayString}`;
+
+  const tomorrowString = today.add(1, "day").format("YYYY-MM-DD");
+  const tomorrowOption = `${tomorrowString}/${tomorrowString}`;
+  const endOfWeek = today.endOf("week");
+  const endOfWeekString = endOfWeek.format("YYYY-MM-DD");
+  const thisWeekOption = `${todayString}/${endOfWeekString}`;
+
+  const startOfWeekend =
+    todayString === endOfWeekString ? endOfWeek : endOfWeek.subtract(1, "day");
+  const startOfWeekendString = startOfWeekend.format("YYYY-MM-DD");
+  const thisWeekendOption = `${startOfWeekendString}/${endOfWeekString}`;
+
+  const startOfNextWeek = endOfWeek.add(1, "day");
+  const startOfNextWeekString = startOfNextWeek.format("YYYY-MM-DD");
+  const endOfNextWeek = startOfNextWeek.endOf("week");
+  const endOfNextWeekString = endOfNextWeek.format("YYYY-MM-DD");
+  const nextWeekOption = `${startOfNextWeekString}/${endOfNextWeekString}`;
+
+  const endOfThisMonth = today.endOf("month");
+  const endOfThisMonthString = endOfThisMonth.format("YYYY-MM-DD");
+  const thisMonthOption = `${todayString}/${endOfThisMonthString}`;
+
+  const activeFrom = searchParams.get("from") ?? todayString;
+  const activeTo = searchParams.get("to") ?? endOfThisMonthString;
 
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerDate, setPickerDate] = useState<Dayjs | null>(
@@ -59,52 +84,45 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
     setDatePickerOpen(false);
   };
 
-  const today = dayjs();
-  const todayString = today.format("YYYY-MM-DD");
-  const todayOption = `${todayString}/${todayString}`;
-
-  const tomorrowString = today.add(1, "day").format("YYYY-MM-DD");
-  const tomorrowOption = `${tomorrowString}/${tomorrowString}`;
-  const endOfWeek = today.endOf("week");
-  const endOfWeekString = endOfWeek.format("YYYY-MM-DD");
-  const thisWeekOption = `${todayString}/${endOfWeekString}`;
-
-  const startOfWeekend =
-    todayString === endOfWeekString ? endOfWeek : endOfWeek.subtract(1, "day");
-  const startOfWeekendString = startOfWeekend.format("YYYY-MM-DD");
-  const thisWeekendOption = `${startOfWeekendString}/${endOfWeekString}`;
-
-  const startOfNextWeek = endOfWeek.add(1, "day");
-  const startOfNextWeekString = startOfNextWeek.format("YYYY-MM-DD");
-  const endOfNextWeek = startOfNextWeek.endOf("week");
-  const endOfNextWeekString = endOfNextWeek.format("YYYY-MM-DD");
-  const nextWeekOption = `${startOfNextWeekString}/${endOfNextWeekString}`;
-
   const datesWithDuplicates = events.map(({ date }) =>
     dayjs(date).format("YYYY-MM-DD"),
   );
   const enableDates = Array.from(new Set(datesWithDuplicates));
 
-  const dateOptions = [
+  let dateOptions = [
     {
       value: todayOption,
-      label: `Сегодня (${datesWithDuplicates.filter((date) => date === todayOption).length})`,
+      label: `Сегодня (${datesWithDuplicates.filter((date) => date === todayString).length})`,
     },
     {
       value: tomorrowOption,
-      label: `Завтра (${datesWithDuplicates.filter((date) => date === tomorrowOption).length})`,
+      label: `Завтра (${datesWithDuplicates.filter((date) => date === tomorrowString).length})`,
     },
-    {
+  ];
+
+  if (!dateOptions.find((opt) => opt.value === thisWeekOption)) {
+    dateOptions.push({
       value: thisWeekOption,
       label: `На этой неделе (${datesWithDuplicates.filter((date) => date >= todayString && date <= endOfWeekString).length})`,
-    },
-    {
+    });
+  }
+
+  if (!dateOptions.find((opt) => opt.value === thisWeekendOption)) {
+    dateOptions.push({
       value: thisWeekendOption,
       label: `На этих выходных (${datesWithDuplicates.filter((date) => date >= startOfWeekendString && date <= endOfWeekString).length})`,
-    },
+    });
+  }
+
+  dateOptions = [
+    ...dateOptions,
     {
       value: nextWeekOption,
       label: `На следующей неделе (${datesWithDuplicates.filter((date) => date >= startOfNextWeekString && date <= endOfNextWeekString).length})`,
+    },
+    {
+      value: thisMonthOption,
+      label: `В этом месяце (${datesWithDuplicates.filter((date) => date <= endOfThisMonthString).length})`,
     },
     { value: CUSTOM_DATE, label: "Выбрать дату" },
   ];
@@ -130,6 +148,8 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
       dateValue = "";
     }
   }
+
+  console.log("HELLOU options", dateOptions);
 
   return (
     <>
