@@ -20,6 +20,8 @@ export const getTagName = (tag: Tag) => {
       return "Благотворительность";
     case "děti":
       return "Для детей";
+    case "studenti":
+      return "Для студентов";
     default:
       return tag;
   }

@@ -18,6 +18,7 @@ const TAGS: Tag[] = [
   "workshop",
   "festival",
   "děti",
+  "studenti",
   "charita",
   "performance",
   "komentovaná prohlídka",

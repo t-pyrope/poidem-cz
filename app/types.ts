@@ -20,4 +20,5 @@ export type Tag =
   | "výstava"
   | "diskuze"
   | "charita"
-  | "děti";
+  | "děti"
+  | "studenti";
