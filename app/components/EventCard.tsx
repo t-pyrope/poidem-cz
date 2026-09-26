@@ -1,5 +1,6 @@
 import { EventWithPrices, Tag } from "@/app/types";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { FiExternalLink } from "react-icons/fi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaMoneyBillAlt } from "react-icons/fa";
@@ -8,8 +9,10 @@ import "dayjs/locale/ru";
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
 import { Button } from "@mui/material";
-import { Business, Person, Telegram } from "@mui/icons-material";
+import { AccessTime, Business, Person, Telegram } from "@mui/icons-material";
 import { ThreadsIcon } from "@/app/components/ThreadsIcon";
+
+dayjs.extend(utc);
 
 const monthsDative = [
   "января",
@@ -33,7 +36,8 @@ export const EventCard = ({
   eventItem: EventWithPrices;
   index: number;
 }) => {
-  const date = dayjs(eventItem.date).locale("ru");
+  // Preserve the database timestamp without applying the server's timezone.
+  const date = dayjs.utc(eventItem.date).locale("ru");
   const dayOfWeek = date.format("dddd");
   const prices = eventItem.prices.sort((a, b) => a.amount - b.amount);
 
@@ -54,6 +58,8 @@ export const EventCard = ({
 
   const organizer = eventItem.organization || eventItem.organizer;
   const isOrganization = !!eventItem.organization;
+
+  const time = date.format("HH:mm");
 
   const openIcon = eventItem.link.includes("//t.me/") ? (
     <Telegram />
@@ -88,8 +94,10 @@ export const EventCard = ({
 
         <h3 className={styles.detailsTitle}>{eventItem.title}</h3>
         <span className={styles.meta}>
-          <FaMapMarkerAlt />
-          {eventItem.address}{" "}
+          <span>
+            <FaMapMarkerAlt />
+            {eventItem.address}{" "}
+          </span>
           <span>
             (
             {isOrganization ? (
@@ -98,7 +106,9 @@ export const EventCard = ({
               <Person fontSize="inherit" sx={{ marginBottom: "3px" }} />
             )}{" "}
             {organizer})
-          </span>
+          </span>{" "}
+          <AccessTime sx={{ width: 16, height: 16 }} />
+          <span>{time}</span>
         </span>
         <span className={styles.meta}>
           <FaMoneyBillAlt />

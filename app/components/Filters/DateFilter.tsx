@@ -42,8 +42,8 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
   const endOfThisMonthString = endOfThisMonth.format("YYYY-MM-DD");
   const thisMonthOption = `${todayString}/${endOfThisMonthString}`;
 
-  const activeFrom = searchParams.get("from") ?? todayString;
-  const activeTo = searchParams.get("to") ?? endOfThisMonthString;
+  const activeFrom = searchParams.get("from") ?? "";
+  const activeTo = searchParams.get("to") ?? "";
 
   const [datePickerOpen, setDatePickerOpen] = useState(false);
   const [pickerDate, setPickerDate] = useState<Dayjs | null>(

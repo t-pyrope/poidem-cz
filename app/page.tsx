@@ -19,16 +19,7 @@ export default async function Home({
 }) {
   const params = await searchParams;
 
-  const today = dayjs();
-  const endOfMonth = today.endOf("month");
-
-  const {
-    category,
-    organization,
-    from = today.format("YYYY-MM-DD"),
-    to = endOfMonth.format("YYYY-MM-DD"),
-    lang,
-  } = params;
+  const { category, organization, from, to, lang } = params;
 
   const events = await db.query.events.findMany({
     orderBy: (events, { asc }) => asc(events.date),
