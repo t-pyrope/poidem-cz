@@ -26,7 +26,10 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
     ),
   ]
     .sort((a, b) => a.localeCompare(b))
-    .map((org) => ({ value: org, label: org }));
+    .map((org) => ({
+      value: org,
+      label: `${org} (${events.filter((event) => event.organization === org).length})`,
+    }));
 
   const categories = events
     .reduce(
@@ -96,7 +99,10 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
           { value: "uk", label: "Украинский" },
           { value: "cs", label: "Чешский" },
           { value: "en", label: "Английский" },
-        ]}
+        ].map(({ value, label }) => ({
+          value,
+          label: `${label} (${events.filter((event) => event.lang === value).length})`,
+        }))}
         value={activeLang}
       />
     </div>
