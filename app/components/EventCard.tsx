@@ -10,9 +10,17 @@ import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
 import { Button } from "@mui/material";
 import { AccessTime, Business, Person, Telegram } from "@mui/icons-material";
+import LanguageIcon from "@mui/icons-material/Language";
 import { ThreadsIcon } from "@/app/components/ThreadsIcon";
 
 dayjs.extend(utc);
+
+const languageNames: Record<string, string> = {
+  ru: "Русский",
+  uk: "Українська",
+  cs: "Čeština",
+  en: "English",
+};
 
 const monthsDative = [
   "января",
@@ -108,7 +116,9 @@ export const EventCard = ({
             {organizer})
           </span>{" "}
           <AccessTime sx={{ width: 16, height: 16 }} />
-          <span>{time}</span>
+          <span>{time}</span>{" "}
+          <LanguageIcon sx={{ width: 16, height: 16 }} />
+          <span>{languageNames[eventItem.lang] ?? eventItem.lang}</span>
         </span>
         <span className={styles.meta}>
           <FaMoneyBillAlt />
