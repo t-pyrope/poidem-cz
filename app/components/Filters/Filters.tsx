@@ -93,6 +93,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
         onChange={handleLangChange}
         options={[
           { value: "ru", label: "Русский" },
+          { value: "uk", label: "Украинский" },
           { value: "cs", label: "Чешский" },
           { value: "en", label: "Английский" },
         ]}

@@ -8,6 +8,7 @@ import {
 
 const LANGUAGES = [
   { value: "ru", label: "Русский" },
+  { value: "uk", label: "Украинский" },
   { value: "cs", label: "Чешский" },
   { value: "en", label: "Английский" },
 ];
