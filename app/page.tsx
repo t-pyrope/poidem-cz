@@ -27,11 +27,12 @@ export default async function Home({
       prices: true,
     },
   });
+  const today = dayjs(new Date());
 
   const eventsToDisplay = events.filter((event) => {
     const eventDate = dayjs(event.date);
 
-    const afterFrom = !from || !eventDate.isBefore(dayjs(from), "day");
+    const afterFrom = !eventDate.isBefore(dayjs(from || today), "day");
     const beforeTo = !to || !eventDate.isAfter(dayjs(to), "day");
 
     return (
