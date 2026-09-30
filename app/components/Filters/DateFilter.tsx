@@ -1,6 +1,14 @@
 "use client";
 
 import { Select } from "@/app/components/Select";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Stack,
+} from "@mui/material";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
@@ -23,12 +31,14 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
 
   const tomorrowString = today.add(1, "day").format("YYYY-MM-DD");
   const tomorrowOption = `${tomorrowString}/${tomorrowString}`;
+
+  const startOfWeek = today.startOf("week");
+  const startOfWeekOption = startOfWeek.format("YYYY-MM-DD");
   const endOfWeek = today.endOf("week");
   const endOfWeekString = endOfWeek.format("YYYY-MM-DD");
-  const thisWeekOption = `${todayString}/${endOfWeekString}`;
+  const thisWeekOption = `${startOfWeekOption}/${endOfWeekString}`;
 
-  const startOfWeekend =
-    todayString === endOfWeekString ? endOfWeek : endOfWeek.subtract(1, "day");
+  const startOfWeekend = endOfWeek.subtract(1, "day");
   const startOfWeekendString = startOfWeekend.format("YYYY-MM-DD");
   const thisWeekendOption = `${startOfWeekendString}/${endOfWeekString}`;
 
@@ -38,16 +48,21 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
   const endOfNextWeekString = endOfNextWeek.format("YYYY-MM-DD");
   const nextWeekOption = `${startOfNextWeekString}/${endOfNextWeekString}`;
 
+  const startOfThisMonth = today.startOf("month");
+  const startOfThisMonthString = startOfThisMonth.format("YYYY-MM-DD");
   const endOfThisMonth = today.endOf("month");
   const endOfThisMonthString = endOfThisMonth.format("YYYY-MM-DD");
-  const thisMonthOption = `${todayString}/${endOfThisMonthString}`;
+  const thisMonthOption = `${startOfThisMonthString}/${endOfThisMonthString}`;
 
   const activeFrom = searchParams.get("from") ?? "";
   const activeTo = searchParams.get("to") ?? "";
 
   const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [pickerDate, setPickerDate] = useState<Dayjs | null>(
+  const [pickerFrom, setPickerFrom] = useState<Dayjs | null>(
     activeFrom ? dayjs(activeFrom) : dayjs(),
+  );
+  const [pickerTo, setPickerTo] = useState<Dayjs | null>(
+    activeTo ? dayjs(activeTo) : null,
   );
 
   const handleDateChange = (value: string) => {
@@ -61,7 +76,8 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
     }
 
     if (value === CUSTOM_DATE) {
-      setPickerDate(activeFrom ? dayjs(activeFrom) : today);
+      setPickerFrom(activeFrom ? dayjs(activeFrom) : today);
+      setPickerTo(activeTo ? dayjs(activeTo) : null);
       setDatePickerOpen(true);
       return;
     }
@@ -71,23 +87,29 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
     updateParams({ from, to });
   };
 
-  const handleCustomDateAccept = (date: Dayjs | null) => {
-    if (!date) return;
-
-    const formatted = date.format("YYYY-MM-DD");
-
-    updateParams({
-      from: formatted,
-      to: formatted,
-    });
-
-    setDatePickerOpen(false);
-  };
-
   const datesWithDuplicates = events.map(({ date }) =>
     dayjs(date).format("YYYY-MM-DD"),
   );
   const enableDates = Array.from(new Set(datesWithDuplicates));
+  const isDateEnabled = (date: Dayjs | null): date is Dayjs =>
+    !!date &&
+    date.isValid() &&
+    !date.isBefore(today, "day") &&
+    enableDates.includes(date.format("YYYY-MM-DD"));
+  const isRangeValid =
+    isDateEnabled(pickerFrom) &&
+    isDateEnabled(pickerTo) &&
+    !pickerTo.isBefore(pickerFrom, "day");
+
+  const handleCustomDateAccept = () => {
+    if (!isRangeValid || !pickerFrom || !pickerTo) return;
+
+    updateParams({
+      from: pickerFrom.format("YYYY-MM-DD"),
+      to: pickerTo.format("YYYY-MM-DD"),
+    });
+    setDatePickerOpen(false);
+  };
 
   let dateOptions = [
     {
@@ -124,7 +146,7 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
       value: thisMonthOption,
       label: `В этом месяце (${datesWithDuplicates.filter((date) => date <= endOfThisMonthString).length})`,
     },
-    { value: CUSTOM_DATE, label: "Выбрать дату" },
+    { value: CUSTOM_DATE, label: "Выбрать период" },
   ];
 
   let dateValue = activeFrom && activeTo ? `${activeFrom}/${activeTo}` : "";
@@ -149,8 +171,6 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
     }
   }
 
-  console.log("HELLOU options", dateOptions);
-
   return (
     <>
       <Select
@@ -161,27 +181,53 @@ export const DateFilter = ({ events }: { events: EventItem[] }) => {
         onChange={handleDateChange}
       />
 
-      <MobileDatePicker
+      <Dialog
         open={datePickerOpen}
         onClose={() => setDatePickerOpen(false)}
-        value={pickerDate}
-        onChange={setPickerDate}
-        onAccept={handleCustomDateAccept}
-        disablePast={true}
-        shouldDisableDate={(day) =>
-          !enableDates.includes(day.format("YYYY-MM-DD"))
-        }
-        slotProps={{
-          textField: {
-            sx: {
-              display: "none",
-            },
-          },
-          actionBar: {
-            actions: ["cancel", "accept"],
-          },
-        }}
-      />
+        aria-labelledby="date-filter-dialog-title"
+        fullWidth
+        maxWidth="xs"
+      >
+        <DialogTitle id="date-filter-dialog-title">Выбрать период</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} sx={{ pt: 1 }}>
+            <MobileDatePicker
+              label="Начало периода"
+              closeOnSelect
+              slotProps={{ actionBar: { actions: [] } }}
+              value={pickerFrom}
+              onChange={(date) => {
+                setPickerFrom(date);
+                if (date?.isValid() && pickerTo?.isBefore(date, "day")) {
+                  setPickerTo(null);
+                }
+              }}
+              disablePast
+              shouldDisableDate={(day) =>
+                !enableDates.includes(day.format("YYYY-MM-DD"))
+              }
+            />
+            <MobileDatePicker
+              label="Конец периода"
+              closeOnSelect
+              slotProps={{ actionBar: { actions: [] } }}
+              value={pickerTo}
+              onChange={setPickerTo}
+              minDate={pickerFrom?.isValid() ? pickerFrom : undefined}
+              disablePast
+              shouldDisableDate={(day) =>
+                !enableDates.includes(day.format("YYYY-MM-DD"))
+              }
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setDatePickerOpen(false)}>Отмена</Button>
+          <Button onClick={handleCustomDateAccept} disabled={!isRangeValid}>
+            Применить
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 };

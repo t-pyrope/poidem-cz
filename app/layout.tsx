@@ -40,7 +40,7 @@ const plexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Афиша Праги — события, концерты, выставки и спектакли",
   description:
-    "1. Куда сходить в Праге сегодня и на этой неделе? Концерты, выставки, спектакли, фестивали и другие мероприятия. Актуальная афиша Праги с датами и местами.",
+    "Куда сходить в Праге сегодня и на этой неделе? Концерты, выставки, спектакли, фестивали и другие мероприятия. Актуальная афиша Праги с датами и местами",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -49,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${plexSerif.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>
