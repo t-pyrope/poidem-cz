@@ -24,6 +24,20 @@ const TAGS: Tag[] = [
   "komentovaná prohlídka",
   "film",
   "výstava",
+  "lecture",
+  "language",
+  "sport",
+  "dance",
+  "music",
+  "networking",
+  "meetup",
+  "literature",
+  "quiz",
+  "market",
+  "food",
+  "tour",
+  "conference",
+  "party",
 ];
 
 export const TagsSelect = ({

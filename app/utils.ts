@@ -22,6 +22,34 @@ export const getTagName = (tag: Tag) => {
       return "Для детей";
     case "studenti":
       return "Для студентов";
+    case "lecture":
+      return "Лекции";
+    case "language":
+      return "Языковые встречи";
+    case "sport":
+      return "Спорт";
+    case "dance":
+      return "Танцы";
+    case "music":
+      return "Музыка";
+    case "networking":
+      return "Нетворкинг";
+    case "meetup":
+      return "Тематические встречи";
+    case "literature":
+      return "Литература";
+    case "quiz":
+      return "Квизы и викторины";
+    case "market":
+      return "Маркеты и ярмарки";
+    case "food":
+      return "Гастрономические мероприятия";
+    case "tour":
+      return "Экскурсии";
+    case "conference":
+      return "Конференции";
+    case "party":
+      return "Вечеринки";
     default:
       return tag;
   }
