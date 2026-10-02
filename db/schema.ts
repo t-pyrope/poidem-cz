@@ -7,6 +7,7 @@ import {
   timestamp,
   uniqueIndex,
   uuid,
+  varchar,
 } from "drizzle-orm/pg-core";
 
 export const events = pgTable("events", {
@@ -21,6 +22,7 @@ export const events = pgTable("events", {
   createdAt: timestamp("created_at").notNull().defaultNow(),
   lang: text("lang").notNull().default("ru"),
   description: text("description").default(""),
+  slug: varchar("slug", { length: 8 }).notNull().unique(),
 });
 
 export const eventPrices = pgTable("event_prices", {

@@ -50,6 +50,13 @@
       "when": 1790960002264,
       "tag": "0006_whole_mister_fear",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1790960668420,
+      "tag": "0007_ordinary_meltdown",
+      "breakpoints": true
     }
   ]
 }
