@@ -5,7 +5,7 @@ import { db } from "@/lib/db";
 import { eq } from "drizzle-orm";
 import { events, users } from "@/db/schema";
 import { eventSchema } from "@/lib/validation";
-import { randomUUID } from "node:crypto";
+import { randomBytes, randomUUID } from "node:crypto";
 import { sendNewEventEmail } from "@/lib/email/event";
 
 export async function POST(req: Request) {
@@ -44,6 +44,7 @@ export async function POST(req: Request) {
     if (user.role === "admin") {
       await db.insert(events).values({
         id,
+        slug: randomBytes(6).toString("base64url"),
         title: data.title,
         tags: data.tags,
         link: data.link,

@@ -57,6 +57,13 @@
       "when": 1790960668420,
       "tag": "0007_ordinary_meltdown",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1790960881019,
+      "tag": "0008_long_gamma_corps",
+      "breakpoints": true
     }
   ]
 }
