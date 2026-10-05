@@ -35,7 +35,7 @@ export default function TermsPage() {
               </Typography>
               <Typography>Сервис предоставляется:</Typography>
               <Typography component="address" sx={{ fontStyle: "normal" }}>
-                <strong>Marmalade skies s.r.o.</strong>
+                <strong>Akkush s.r.o.</strong>
                 <br />
                 IČO: 24372901
                 <br />
@@ -67,8 +67,8 @@ export default function TermsPage() {
               </Typography>
               <Typography>
                 Публикация мероприятия{" "}
-                <strong>не является автоматической</strong>. Marmalade skies
-                s.r.o. вправе проверить предоставленную информацию и отказать в
+                <strong>не является автоматической</strong>. Akkush s.r.o.
+                вправе проверить предоставленную информацию и отказать в
                 публикации либо удалить опубликованное мероприятие, если оно:
               </Typography>
               <List component="ul" sx={{ listStyleType: "disc", pl: 3 }}>
@@ -101,8 +101,8 @@ export default function TermsPage() {
                 необходимых прав на размещаемые материалы.
               </Typography>
               <Typography>
-                Marmalade skies s.r.o. не является организатором мероприятий,
-                если прямо не указано иное.
+                Akkush s.r.o. не является организатором мероприятий, если прямо
+                не указано иное.
               </Typography>
               <Typography>
                 Информация о мероприятиях предоставляется для ознакомления.
@@ -115,8 +115,8 @@ export default function TermsPage() {
               <Typography>
                 Передавая текст, изображения и другие материалы для публикации,
                 пользователь подтверждает, что имеет право их использовать и
-                разрешает Marmalade skies s.r.o. использовать их для работы и
-                продвижения сайта.
+                разрешает Akkush s.r.o. использовать их для работы и продвижения
+                сайта.
               </Typography>
             </Section>
 

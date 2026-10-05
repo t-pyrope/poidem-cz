@@ -41,7 +41,7 @@ export default function PrivacyPage() {
               <Address includeId />
               <Email />
               <Typography>
-                В настоящей Политике «мы» означает Marmalade skies s.r.o.
+                В настоящей Политике «мы» означает Akkush s.r.o.
               </Typography>
             </Section>
             <Section title="2. Какие данные мы обрабатываем">
@@ -261,7 +261,7 @@ function ProviderList() {
 function Address({ includeId = false }: { includeId?: boolean }) {
   return (
     <Typography component="address" sx={{ fontStyle: "normal" }}>
-      <strong>Marmalade skies s.r.o.</strong>
+      <strong>Akkush s.r.o.</strong>
       <br />
       {includeId && (
         <>

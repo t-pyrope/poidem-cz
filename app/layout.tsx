@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { siteUrl } from "@/lib/seo";
 import {
   Geist,
   Geist_Mono,
@@ -38,6 +39,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: siteUrl,
   title: "Афиша Праги — события, концерты, выставки и спектакли",
   description:
     "Куда сходить в Праге сегодня и на этой неделе? Концерты, выставки, спектакли, фестивали и другие мероприятия. Актуальная афиша Праги с датами и местами",
@@ -46,7 +48,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
-      lang="en"
+      lang="ru"
       className={`${geistSans.variable} ${geistMono.variable} ${plexSerif.variable} ${inter.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col" suppressHydrationWarning>

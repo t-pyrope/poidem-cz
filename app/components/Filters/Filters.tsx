@@ -10,7 +10,13 @@ import { Select } from "../Select";
 import { DateFilter } from "@/app/components/Filters/DateFilter";
 import { useUpdateParams } from "@/app/components/Filters/utils";
 
-export const Filters = ({ events }: { events: EventItem[] }) => {
+export const Filters = ({
+  events,
+  showDateFilter = true,
+}: {
+  events: EventItem[];
+  showDateFilter?: boolean;
+}) => {
   const searchParams = useSearchParams();
   const { updateParams } = useUpdateParams();
 
@@ -88,7 +94,7 @@ export const Filters = ({ events }: { events: EventItem[] }) => {
         onChange={handleOrganizationChange}
       />
 
-      <DateFilter events={events} />
+      {showDateFilter && <DateFilter events={events} />}
 
       <Select
         ariaLabel="Язык"

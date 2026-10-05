@@ -172,3 +172,13 @@
     min-width: 0;
   }
 }
+
+.footerNav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footerNav a:hover {
+  color: var(--lamp);
+}
