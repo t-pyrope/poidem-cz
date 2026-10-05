@@ -12,6 +12,7 @@ import { Button } from "@mui/material";
 import { AccessTime, Business, Person, Telegram } from "@mui/icons-material";
 import LanguageIcon from "@mui/icons-material/Language";
 import { ThreadsIcon } from "@/app/components/ThreadsIcon";
+import Link from "next/link";
 
 dayjs.extend(utc);
 
@@ -47,7 +48,7 @@ export const EventCard = ({
   // Preserve the database timestamp without applying the server's timezone.
   const date = dayjs.utc(eventItem.date).locale("ru");
   const dayOfWeek = date.format("dddd");
-  const prices = eventItem.prices.sort((a, b) => a.amount - b.amount);
+  const prices = [...eventItem.prices].sort((a, b) => a.amount - b.amount);
 
   let priceMessage = "Неизвестно";
 
@@ -100,7 +101,11 @@ export const EventCard = ({
           ))}
         </div>
 
-        <h3 className={styles.detailsTitle}>{eventItem.title}</h3>
+        <h3 className={styles.detailsTitle}>
+          <Link href={`/events/${eventItem.slug}`} className={styles.eventLink}>
+            {eventItem.title}
+          </Link>
+        </h3>
         <span className={styles.meta}>
           <span>
             <FaMapMarkerAlt />

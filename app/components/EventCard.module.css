@@ -6,6 +6,7 @@
 }
 
 .ticket {
+    position: relative;
     display: flex;
     background: var(--night-deep);
     border: 1px solid var(--line);
@@ -131,9 +132,32 @@
 }
 
 .linkSection {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
     padding: 20px 26px;
     display: flex;
     align-items: flex-start;
+}
+
+.linkSection a {
+    pointer-events: auto;
+}
+
+.eventLink::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+}
+
+.eventLink:focus-visible {
+    outline: none;
+}
+
+.eventLink:focus-visible::after {
+    outline: 2px solid var(--lamp);
+    outline-offset: -2px;
 }
 
 .link {
@@ -170,4 +194,3 @@
         padding: 14px 20px;
     }
 }
-
