@@ -1,18 +1,16 @@
 import { EventWithPrices, Tag } from "@/app/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import { FiExternalLink } from "react-icons/fi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import "dayjs/locale/ru";
 
 import styles from "./EventCard.module.css";
 import { getTagName } from "@/app/utils";
-import { Button } from "@mui/material";
-import { AccessTime, Business, Person, Telegram } from "@mui/icons-material";
+import { AccessTime, Business, Person } from "@mui/icons-material";
 import LanguageIcon from "@mui/icons-material/Language";
-import { ThreadsIcon } from "@/app/components/ThreadsIcon";
 import Link from "next/link";
+import { GoToEventButton } from "@/app/components/GoToEventButton";
 
 dayjs.extend(utc);
 
@@ -71,14 +69,6 @@ export const EventCard = ({
   const time = date.format("HH:mm");
   const timeMessage = time === "00:00" ? "Время неизвестно" : time;
 
-  const openIcon = eventItem.link.includes("//t.me/") ? (
-    <Telegram />
-  ) : eventItem.link.includes("//www.threads.com/") ? (
-    <ThreadsIcon />
-  ) : (
-    <FiExternalLink />
-  );
-
   return (
     <article
       key={eventItem.title}
@@ -133,15 +123,7 @@ export const EventCard = ({
       </div>
 
       <div className={styles.linkSection}>
-        <Button
-          href={eventItem.link}
-          variant="contained"
-          target="_blank"
-          rel="noopener noreferrer"
-          endIcon={openIcon}
-        >
-          Перейти
-        </Button>
+        <GoToEventButton link={eventItem.link} />
       </div>
     </article>
   );

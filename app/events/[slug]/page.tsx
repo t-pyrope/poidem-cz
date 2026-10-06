@@ -12,6 +12,7 @@ import { Tag } from "@/app/types";
 import homeStyles from "@/app/page.module.css";
 import cardStyles from "@/app/components/EventCard.module.css";
 import styles from "./page.module.css";
+import { GoToEventButton } from "@/app/components/GoToEventButton";
 
 dayjs.extend(utc);
 
@@ -120,15 +121,7 @@ export default async function EventPage({
                 </dd>
               </div>
             </dl>
-            <Button
-              href={event.link}
-              variant="contained"
-              target="_blank"
-              rel="noopener noreferrer"
-              endIcon={<OpenInNew />}
-            >
-              Перейти
-            </Button>
+            <GoToEventButton link={event.link} />
           </aside>
         </div>
       </main>
