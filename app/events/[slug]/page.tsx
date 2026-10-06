@@ -36,6 +36,8 @@ export default async function EventPage({
   if (!event) notFound();
 
   const date = dayjs.utc(event.date).locale("ru");
+  const time = date.format("HH:mm");
+  const timeMessage = time === "00:00" ? "Время неизвестно" : time;
   const prices = [...event.prices].sort((a, b) => a.amount - b.amount);
 
   return (
@@ -62,7 +64,7 @@ export default async function EventPage({
             </h1>
             <p className={homeStyles.heroText}>
               <time dateTime={date.format("YYYY-MM-DDTHH:mm:ss")}>
-                {date.format("D MMMM YYYY, dddd · HH:mm")}
+                {date.format("D MMMM YYYY, dddd")} · {timeMessage}
               </time>
             </p>
           </div>

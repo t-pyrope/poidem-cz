@@ -69,6 +69,7 @@ export const EventCard = ({
   const isOrganization = !!eventItem.organization;
 
   const time = date.format("HH:mm");
+  const timeMessage = time === "00:00" ? "Время неизвестно" : time;
 
   const openIcon = eventItem.link.includes("//t.me/") ? (
     <Telegram />
@@ -121,7 +122,7 @@ export const EventCard = ({
             {organizer})
           </span>{" "}
           <AccessTime sx={{ width: 16, height: 16 }} />
-          <span>{time}</span>{" "}
+          <span>{timeMessage}</span>{" "}
           <LanguageIcon sx={{ width: 16, height: 16 }} />
           <span>{languageNames[eventItem.lang] ?? eventItem.lang}</span>
         </span>
