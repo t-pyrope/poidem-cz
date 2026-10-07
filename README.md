@@ -38,3 +38,33 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## SEO
 
 Set `NEXT_PUBLIC_SITE_URL` to the public production origin (default: `https://poidem.cz`). It is used for canonical URLs, social metadata, `/sitemap.xml`, and `/robots.txt`.
+
+## Daily event cleanup
+
+`scripts/delete-past-events.mjs` deletes events whose local date is before yesterday
+in `Europe/Prague` (the day before yesterday and older). Events from yesterday,
+today, and future dates are kept, and related `event_prices` are
+deleted by the existing foreign key cascade. The database session timezone does
+not affect the cutoff.
+
+On a server with Node.js 20.6+ and the project dependencies installed, set
+`DATABASE_URL` in the project's `.env` file (or environment). To run manually:
+
+```bash
+npm run events:cleanup
+```
+
+For daily execution at 04:00 Prague time, open `crontab -e` for the application
+user and add the entries from `cron/delete-past-events.crontab`. Replace
+`/srv/poidem-cz` and `/usr/bin/node` with the absolute server paths. This requires
+a cron implementation supporting `CRON_TZ`, such as
+[Cronie](https://github.com/cronie-crond/cronie/blob/master/man/crontab.5).
+`Europe/Prague` accounts for summer and winter time automatically. For cron
+implementations without `CRON_TZ`, configure the scheduler's timezone as
+`Europe/Prague` before using `0 4 * * *`; setting only the command's `TZ` does not
+change the execution schedule.
+
+The crontab is a server configuration template; adding it to the repository does
+not install or enable the job. For serverless hosting, configure an external
+scheduler with `Europe/Prague` timezone support to run this script where it can
+access the database.

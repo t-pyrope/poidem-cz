@@ -1,0 +1,4 @@
+# User crontab for Cronie (requires CRON_TZ support).
+# Replace the project and Node paths with their absolute paths on the server.
+CRON_TZ=Europe/Prague
+0 4 * * * cd /srv/poidem-cz && /usr/bin/node --env-file=.env scripts/delete-past-events.mjs
