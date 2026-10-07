@@ -1,16 +1,59 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import type { Tag } from "@/app/types";
+import { getTagName } from "@/app/utils";
+import { tagSlugs } from "@/lib/event-tags";
 import styles from "@/app/page.module.css";
 
 export const AppFooter = () => {
+  const pathname = usePathname();
+  const currentPage = (href: string) =>
+    pathname === href ? ("page" as const) : undefined;
+
   return (
     <footer className={styles.footer}>
-      <span>Пойдём — афиша русскоязычной Праги</span>
-      <nav aria-label="Мероприятия по дням" className={styles.footerNav}>
-        <Link href="/today">Сегодня</Link>
-        <Link href="/tomorrow">Завтра</Link>
-        <Link href="/weekend">На выходных</Link>
-      </nav>
-      <span>© 2026 Alina Isachanka · Akkush s.r.o.</span>
+      <div className={styles.footerInner}>
+        <Link
+          href="/"
+          className={styles.footerBrand}
+          aria-current={currentPage("/")}
+        >
+          Пойдём — афиша русскоязычной Праги
+        </Link>
+        <nav aria-label="Мероприятия по дням" className={styles.footerNav}>
+          <Link href="/today" aria-current={currentPage("/today")}>
+            Сегодня
+          </Link>
+          <Link href="/tomorrow" aria-current={currentPage("/tomorrow")}>
+            Завтра
+          </Link>
+          <Link href="/weekend" aria-current={currentPage("/weekend")}>
+            На выходных
+          </Link>
+        </nav>
+        <nav aria-labelledby="footer-categories-title">
+          <h2 id="footer-categories-title" className={styles.footerHeading}>
+            Категории мероприятий
+          </h2>
+          <ul className={styles.footerCategories}>
+            {(Object.keys(tagSlugs) as Tag[]).map((tag) => (
+              <li key={tag}>
+                <Link
+                  href={`/events/${tagSlugs[tag]}`}
+                  aria-current={currentPage(`/events/${tagSlugs[tag]}`)}
+                >
+                  {getTagName(tag)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className={styles.footerCopyright}>
+          © 2026 Alina Isachanka · Akkush s.r.o.
+        </div>
+      </div>
     </footer>
   );
 };
