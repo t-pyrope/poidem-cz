@@ -1,0 +1,38 @@
+.page {
+  min-height: auto;
+  flex: 1;
+}
+
+.hero {
+  flex: 1;
+  align-items: center;
+  padding: 64px 0 88px;
+}
+
+.content {
+  flex-grow: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.code {
+  margin: 0 0 24px;
+  color: var(--lamp);
+  font-family: var(--font-plex-serif), serif;
+  font-size: clamp(100px, 19vw, 180px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-shadow: 0 0 80px rgb(232 169 76 / 16%);
+}
+
+.description {
+  max-width: 540px;
+  text-wrap: pretty;
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 48px 0 64px;
+  }
+}
