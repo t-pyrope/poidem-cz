@@ -1,6 +1,14 @@
+import Link from "next/link";
+import { getTagPath } from "@/lib/event-tags";
+import { getTagPage } from "@/lib/event-tags";
+import { eventPageMetadata } from "@/lib/seo";
+import {
+  EventsPage,
+  type EventSearchParams,
+} from "@/app/components/EventsPage";
 import { notFound } from "next/navigation";
 import { Button } from "@mui/material";
-import { ArrowBack, OpenInNew } from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import "dayjs/locale/ru";
@@ -23,12 +31,34 @@ const languageNames: Record<string, string> = {
   en: "English",
 };
 
-export default async function EventPage({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const category = getTagPage(slug);
+  return category
+    ? eventPageMetadata(
+        category.path,
+        `${category.title} — Пойдём`,
+        category.description,
+      )
+    : {};
+}
+
+export default async function EventPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<EventSearchParams>;
+}) {
+  const { slug } = await params;
+  const category = getTagPage(slug);
+  if (category)
+    return <EventsPage tagPage={category} searchParams={searchParams} />;
+
   const event = await db.query.events.findFirst({
     where: (events, { eq }) => eq(events.slug, slug),
     with: { prices: true },
@@ -54,11 +84,21 @@ export default async function EventPage({
             </div>
             <div className={homeStyles.eyebrow}>Мероприятие в Праге</div>
             <div className={cardStyles.tags}>
-              {event.tags.map((tag) => (
-                <span className={cardStyles.tag} key={tag}>
-                  {getTagName(tag as Tag)}
-                </span>
-              ))}
+              {event.tags.map((tag) =>
+                getTagPath(tag) ? (
+                  <Link
+                    href={getTagPath(tag)!}
+                    className={cardStyles.tag}
+                    key={tag}
+                  >
+                    {getTagName(tag as Tag)}
+                  </Link>
+                ) : (
+                  <span className={cardStyles.tag} key={tag}>
+                    {getTagName(tag as Tag)}
+                  </span>
+                ),
+              )}
             </div>
             <h1 className={`${homeStyles.h1} ${styles.title}`}>
               {event.title}

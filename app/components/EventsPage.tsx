@@ -1,3 +1,7 @@
+import { arrayContains } from "drizzle-orm";
+import type { getTagPage } from "@/lib/event-tags";
+import { Button } from "@mui/material";
+import { ArrowBack } from "@mui/icons-material";
 import styles from "@/app/page.module.css";
 import { db } from "@/lib/db";
 import { EventCard } from "@/app/components/EventCard";
@@ -22,9 +26,11 @@ export type EventSearchParams = {
 export async function EventsPage({
   searchParams,
   period,
+  tagPage,
 }: {
   searchParams: Promise<EventSearchParams>;
   period?: EventPeriod;
+  tagPage?: NonNullable<ReturnType<typeof getTagPage>>;
 }) {
   const params = await searchParams;
 
@@ -33,10 +39,12 @@ export async function EventsPage({
   const range = period ? getEventPeriod(period) : undefined;
 
   const events = await db.query.events.findMany({
-    where: range
-      ? (events, { and, gte, lt }) =>
-          and(gte(events.date, range.start), lt(events.date, range.end))
-      : undefined,
+    where: (events, { and, gte, lt }) =>
+      and(
+        range ? gte(events.date, range.start) : undefined,
+        range ? lt(events.date, range.end) : undefined,
+        tagPage ? arrayContains(events.tags, [tagPage.tag]) : undefined,
+      ),
     orderBy: (events, { asc }) => asc(events.date),
     with: {
       prices: true,
@@ -52,7 +60,7 @@ export async function EventsPage({
     const beforeTo = !!range || !to || !eventDate.isAfter(dayjs(to), "day");
 
     return (
-      (!category || event.tags.includes(category)) &&
+      (!category || !!tagPage || event.tags.includes(category)) &&
       (!organization || event.organization === organization) &&
       (!lang || event.lang === lang) &&
       afterFrom &&
@@ -70,27 +78,45 @@ export async function EventsPage({
           <span className={`${styles.lampDot} ${styles.dot3}`} />
           <span className={`${styles.lampDot} ${styles.dot4}`} />
           <div className={styles.wrap}>
+            {(tagPage || period) && (
+              <div className={styles.backLink}>
+                <Button href="/" variant="outlined" startIcon={<ArrowBack />}>
+                  На главную
+                </Button>
+              </div>
+            )}
             <div className={styles.eyebrow}>
-              {range?.eyebrow ?? "Прага, каждый день"}
+              {(tagPage ? `Прага · ${tagPage.name}` : undefined) ??
+                range?.eyebrow ??
+                "Прага, каждый день"}
             </div>
             <h1 className={styles.h1}>
-              {range?.title ?? "Пойдём — афиша мероприятий в Праге"}
+              {tagPage?.title ??
+                range?.title ??
+                "Пойдём — афиша мероприятий в Праге"}
             </h1>
             <p className={styles.heroText}>
-              {range?.description ??
+              {tagPage?.description ??
+                range?.description ??
                 "Встречи, выставки, концерты, спектакли и многое другое"}
             </p>
           </div>
         </section>
 
         <div className={styles.wrap}>
-          <Filters events={events} showDateFilter={!period} />
+          <Filters
+            events={events}
+            showDateFilter={!period}
+            showCategoryFilter={!tagPage}
+          />
           <div className={styles.feed}>
             {eventsToDisplay.map((ev, i) => (
               <EventCard eventItem={ev} index={i} key={ev.id} />
             ))}
             {eventsToDisplay.length === 0 &&
-              (range?.emptyMessage ?? "Нет событий")}
+              (tagPage
+                ? "В этой категории пока нет мероприятий"
+                : (range?.emptyMessage ?? "Нет событий"))}
           </div>
         </div>
       </main>

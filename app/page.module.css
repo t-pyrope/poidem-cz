@@ -182,3 +182,7 @@
 .footerNav a:hover {
   color: var(--lamp);
 }
+
+.backLink {
+  margin-bottom: 32px;
+}

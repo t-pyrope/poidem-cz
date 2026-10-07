@@ -13,9 +13,11 @@ import { useUpdateParams } from "@/app/components/Filters/utils";
 export const Filters = ({
   events,
   showDateFilter = true,
+  showCategoryFilter = true,
 }: {
   events: EventItem[];
   showDateFilter?: boolean;
+  showCategoryFilter?: boolean;
 }) => {
   const searchParams = useSearchParams();
   const { updateParams } = useUpdateParams();
@@ -78,13 +80,15 @@ export const Filters = ({
 
   return (
     <div className={styles.cats}>
-      <Select
-        ariaLabel="Категория"
-        emptyOptionLabel="Все категории"
-        value={activeCategory ?? ""}
-        options={categories}
-        onChange={handleCategoryChange}
-      />
+      {showCategoryFilter && (
+        <Select
+          ariaLabel="Категория"
+          emptyOptionLabel="Все категории"
+          value={activeCategory ?? ""}
+          options={categories}
+          onChange={handleCategoryChange}
+        />
+      )}
 
       <Select
         ariaLabel="Организатор"

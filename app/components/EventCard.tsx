@@ -1,3 +1,4 @@
+import { getTagPath } from "@/lib/event-tags";
 import { EventWithPrices, Tag } from "@/app/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -85,11 +86,17 @@ export const EventCard = ({
 
       <div className={styles.details}>
         <div className={styles.tags}>
-          {eventItem.tags.map((tag) => (
-            <span className={styles.tag} key={tag}>
-              {getTagName(tag as Tag)}
-            </span>
-          ))}
+          {eventItem.tags.map((tag) =>
+            getTagPath(tag) ? (
+              <Link href={getTagPath(tag)!} className={styles.tag} key={tag}>
+                {getTagName(tag as Tag)}
+              </Link>
+            ) : (
+              <span className={styles.tag} key={tag}>
+                {getTagName(tag as Tag)}
+              </span>
+            ),
+          )}
         </div>
 
         <h3 className={styles.detailsTitle}>
