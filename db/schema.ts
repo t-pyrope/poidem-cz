@@ -23,6 +23,7 @@ export const events = pgTable("events", {
   lang: text("lang").notNull().default("ru"),
   description: text("description").default(""),
   slug: varchar("slug", { length: 8 }).notNull().unique(),
+  test: text("test"),
 });
 
 export const eventPrices = pgTable("event_prices", {
