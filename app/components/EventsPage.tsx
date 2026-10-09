@@ -36,11 +36,14 @@ export async function EventsPage({
 
   const { category, organization, from, to, lang } = params;
 
-  const range = period ? getEventPeriod(period) : undefined;
+  const now = new Date();
+  const todayStart = getEventPeriod("today", now).start;
+  const range = period ? getEventPeriod(period, now) : undefined;
 
   const events = await db.query.events.findMany({
     where: (events, { and, gte, lt }) =>
       and(
+        gte(events.date, todayStart),
         range ? gte(events.date, range.start) : undefined,
         range ? lt(events.date, range.end) : undefined,
         tagPage ? arrayContains(events.tags, [tagPage.tag]) : undefined,
@@ -50,14 +53,14 @@ export async function EventsPage({
       prices: true,
     },
   });
-  const today = dayjs(new Date());
+  const today = dayjs.utc(todayStart);
 
   const eventsToDisplay = events.filter((event) => {
     const eventDate = dayjs.utc(event.date);
 
     const afterFrom =
-      !!range || !eventDate.isBefore(dayjs(from || today), "day");
-    const beforeTo = !!range || !to || !eventDate.isAfter(dayjs(to), "day");
+      !!range || !eventDate.isBefore(from ? dayjs.utc(from) : today, "day");
+    const beforeTo = !!range || !to || !eventDate.isAfter(dayjs.utc(to), "day");
 
     return (
       (!category || !!tagPage || event.tags.includes(category)) &&
@@ -67,6 +70,12 @@ export async function EventsPage({
       beforeTo
     );
   });
+
+  const emptyMessage = tagPage
+    ? organization || lang || from || to
+      ? "Нет мероприятий по выбранным фильтрам. Попробуйте изменить фильтры."
+      : "В этой категории нет мероприятий на сегодня и ближайшие дни. Прошедшие события не показываются."
+    : (range?.emptyMessage ?? "Нет событий");
 
   return (
     <>
@@ -113,10 +122,7 @@ export async function EventsPage({
             {eventsToDisplay.map((ev, i) => (
               <EventCard eventItem={ev} index={i} key={ev.id} />
             ))}
-            {eventsToDisplay.length === 0 &&
-              (tagPage
-                ? "В этой категории пока нет мероприятий"
-                : (range?.emptyMessage ?? "Нет событий"))}
+            {eventsToDisplay.length === 0 && emptyMessage}
           </div>
         </div>
       </main>
