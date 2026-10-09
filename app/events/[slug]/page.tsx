@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { getTagPath } from "@/lib/event-tags";
+import { getTagPath, getLegacyTagPath } from "@/lib/event-tags";
 import { getTagPage } from "@/lib/event-tags";
 import { eventPageMetadata } from "@/lib/seo";
 import {
   EventsPage,
   type EventSearchParams,
 } from "@/app/components/EventsPage";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Button } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import dayjs from "dayjs";
@@ -21,6 +21,19 @@ import homeStyles from "@/app/page.module.css";
 import cardStyles from "@/app/components/EventCard.module.css";
 import styles from "./page.module.css";
 import { GoToEventButton } from "@/app/components/GoToEventButton";
+import { cache } from "react";
+
+export const dynamic = "force-dynamic";
+
+// Deduplicate within one render, without retaining deleted events across requests.
+const getEvent = cache(async (slug: string) => {
+  const event = await db.query.events.findFirst({
+    where: (events, { eq }) => eq(events.slug, slug),
+    with: { prices: true },
+  });
+  if (!event) notFound();
+  return event;
+});
 
 dayjs.extend(utc);
 
@@ -37,14 +50,21 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
+  const legacyPath = getLegacyTagPath(slug);
+  if (legacyPath) permanentRedirect(legacyPath);
   const category = getTagPage(slug);
-  return category
-    ? eventPageMetadata(
-        category.path,
-        `${category.title} — Пойдём`,
-        category.description,
-      )
-    : {};
+  if (category)
+    return eventPageMetadata(
+      category.path,
+      `${category.title} — Пойдём`,
+      category.description,
+    );
+  const event = await getEvent(slug);
+  return eventPageMetadata(
+    `/events/${encodeURIComponent(event.slug)}`,
+    `${event.title} — Пойдём`,
+    event.description?.trim() || event.title,
+  );
 }
 
 export default async function EventPage({
@@ -55,16 +75,13 @@ export default async function EventPage({
   searchParams: Promise<EventSearchParams>;
 }) {
   const { slug } = await params;
+  const legacyPath = getLegacyTagPath(slug);
+  if (legacyPath) permanentRedirect(legacyPath);
   const category = getTagPage(slug);
   if (category)
     return <EventsPage tagPage={category} searchParams={searchParams} />;
 
-  const event = await db.query.events.findFirst({
-    where: (events, { eq }) => eq(events.slug, slug),
-    with: { prices: true },
-  });
-
-  if (!event) notFound();
+  const event = await getEvent(slug);
 
   const date = dayjs.utc(event.date).locale("ru");
   const time = date.format("HH:mm");

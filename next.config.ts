@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Resolve metadata (and notFound) before sending headers for every user agent.
+  htmlLimitedBots: /.*/,
 };
 
 export default nextConfig;

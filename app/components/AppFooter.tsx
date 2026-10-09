@@ -4,13 +4,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Tag } from "@/app/types";
 import { getTagName } from "@/app/utils";
-import { tagSlugs } from "@/lib/event-tags";
+import { getTagPath, tagSlugs } from "@/lib/event-tags";
 import styles from "@/app/page.module.css";
 
 export const AppFooter = () => {
   const pathname = usePathname();
   const currentPage = (href: string) =>
-    pathname === href ? ("page" as const) : undefined;
+    pathname === href || pathname === decodeURIComponent(href)
+      ? ("page" as const)
+      : undefined;
 
   return (
     <footer className={styles.footer}>
@@ -41,8 +43,8 @@ export const AppFooter = () => {
             {(Object.keys(tagSlugs) as Tag[]).map((tag) => (
               <li key={tag}>
                 <Link
-                  href={`/events/${tagSlugs[tag]}`}
-                  aria-current={currentPage(`/events/${tagSlugs[tag]}`)}
+                  href={getTagPath(tag)!}
+                  aria-current={currentPage(getTagPath(tag)!)}
                 >
                   {getTagName(tag)}
                 </Link>
